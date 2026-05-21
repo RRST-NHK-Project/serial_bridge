@@ -35,7 +35,7 @@ This package enables real-time control of motors, servos, and solenoid valves on
 - Automatic serial port scanning — no manual port assignment required.
 - Hot-plug support via dynamic node creation: MCUs can be connected or disconnected at any time and are automatically detected and recovered.
 - Multi-MCU support: each MCU is identified by `DEVICE_ID` in the frame, independent of USB port order.
-- Custom binary frame protocol with `int16` data arrays (24 TX / 17 RX slots).
+- Custom binary frame protocol with `int16` data arrays (24 TX / 24 RX slots).
 - XOR checksum-based frame validation ensures communication reliability.
 - Automatic reconnection on disconnect or RX timeout.
 - Three log output modes: terminal text, graphical bar, or silent. Default is graphical mode.
@@ -130,7 +130,7 @@ ROS 2 (serial_bridge)                      MCU
 | Direction | Slots | Bytes |
 |:---|---:|---:|
 | PC → MCU (TX) | 24 × int16 | 48 |
-| MCU → PC (RX) | 17 × int16 | 34 |
+| MCU → PC (RX) | 24 × int16 | 48 |
 
 ### Typical TX slot usage (esp32_serial_bridge)
 
@@ -146,6 +146,7 @@ ROS 2 (serial_bridge)                      MCU
 |---:|:---|
 | 1–8 | Encoder values |
 | 9–16 | Switch / sensor inputs |
+| 17–23 | Reserved |
 
 ---
 

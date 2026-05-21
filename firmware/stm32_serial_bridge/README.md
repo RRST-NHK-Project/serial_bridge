@@ -12,9 +12,10 @@ It implements the **maximum slot layout expected by the ROS side**:
   - MD1..8 (slots 1..8)
   - SERVO1..8 (slots 9..16)
   - TR1..7 (slots 17..23)
-- TX (MCU → PC, 17 × int16):
+- TX (MCU → PC, 24 × int16):
   - ENC1..8 (slots 1..8)
   - SW1..8 (slots 9..16)
+  - reserved (slots 17..23)
 
 This project targets Nucleo boards:
 - NUCLEO-F446RE

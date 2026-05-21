@@ -57,8 +57,9 @@ This firmware uses the same frame format as `serial_bridge`.
 - Slot 9..14 (`Rx_16Data[9..14]`): SERVO1..SERVO6 angle in degrees
 - Other slots: currently ignored
 
-### MCU → PC (17 × int16)
+### MCU → PC (24 × int16)
 - Slot 9..16 (`Tx_16Data[9..16]`): SW1..SW8 (0 or 1)
+- Slot 17..23: reserved
 - Other slots: set to 0
 
 ---

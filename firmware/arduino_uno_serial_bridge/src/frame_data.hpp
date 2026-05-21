@@ -3,7 +3,7 @@
 Frame slot definitions for arduino_uno_serial_bridge.
 
 - RX: PC -> MCU (24 x int16)
-- TX: MCU -> PC (17 x int16)
+- TX: MCU -> PC (24 x int16)
 ====================================================================*/
 
 #pragma once
@@ -11,7 +11,7 @@ Frame slot definitions for arduino_uno_serial_bridge.
 #include <stdint.h>
 
 // MCU -> PC
-#define Tx16NUM 17
+#define Tx16NUM 24
 // PC -> MCU
 #define Rx16NUM 24
 
@@ -20,6 +20,7 @@ extern volatile int16_t Tx_16Data[Tx16NUM];
 0: reserved/debug
 1..8: reserved (encoder/sensors)
 9..16: SW1..SW8 (this Uno firmware uses 9..12 as SW1..SW4)
+17..23: reserved
 */
 
 extern volatile int16_t Rx_16Data[Rx16NUM];

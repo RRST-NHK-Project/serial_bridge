@@ -51,6 +51,7 @@ RX (PC -> MCU):
 TX (MCU -> PC):
 - 1 to 8: encoder slots
 - 9 to 16: switch slots
+- 17 to 23: reserved
 
 ---
 

@@ -20,7 +20,7 @@ namespace serial_bridge::config {
     inline constexpr int kGraphicalUiFrameMs = 100;
 
     inline constexpr std::size_t kTx16Num = 24;
-    inline constexpr std::size_t kRx16Num = 17;
+    inline constexpr std::size_t kRx16Num = 24;
     inline constexpr uint8_t kStartByte = 0xAA;
     inline constexpr int kReadBufferSize = 512;
     inline constexpr int kUpdatePeriodMs = 5;
