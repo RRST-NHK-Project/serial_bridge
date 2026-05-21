@@ -1,5 +1,9 @@
 # **serial_bridge**
 
+> NOTE: Microcontroller projects have been moved into the `firmware/` directory
+> (e.g. `firmware/esp32_serial_bridge`, `firmware/stm32_serial_bridge`) to
+> clearly separate MCU-side code from ROS-side code.
+
 > 日本語版: [README_ja.md](README_ja.md)
 
 ## 1. Overview
