@@ -74,7 +74,7 @@ void ROBOMAS_IO_Task(void *) {
         Servo_Output();
         IO_TR_Output();
         ROBOMAS_IO_ENC_Input();
-        SW_Input();
+        ROBOMAS_IO_SW_Input();
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
@@ -204,6 +204,11 @@ void ROBOMAS_IO_ENC_Input() {
     pcnt_get_counter_value(PCNT_UNIT_2, (int16_t *)&Tx_16Data[3]);
     pcnt_get_counter_value(PCNT_UNIT_3, (int16_t *)&Tx_16Data[4]);
 }
+
+void ROBOMAS_IO_SW_Input() {
+    Tx_16Data[9] = !digitalRead(SW1);
+    Tx_16Data[10] = !digitalRead(SW2);
+    }
 
 // void IO_ENC_Input() {
 //     // ENC入力処理
