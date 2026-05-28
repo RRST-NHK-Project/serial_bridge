@@ -22,6 +22,7 @@ void IO_TR_Output();
 void IO_ENC_Input();
 void IO_SW_Input();
 void ROBOMAS_IO_ENC_Input();
+void ROBOMAS_IO_SW_Input();
 
 // ================= TASK =================
 
@@ -71,7 +72,7 @@ void ROBOMAS_IO_Task(void *) {
     ROBOMAS_IO_init();
 
     while (1) {
-        Servo_Output();
+        //Servo_Output();
         IO_TR_Output();
         ROBOMAS_IO_ENC_Input();
         ROBOMAS_IO_SW_Input();
