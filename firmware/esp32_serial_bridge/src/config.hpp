@@ -17,6 +17,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 //#define MODE_OUTPUT
 //#define MODE_INPUT
 //#define MODE_IO
+//#define MODE_OMNI_IO
 //#define MODE_ROBOMAS
 // #define MODE_ROBOMAS_PLUS_OUTPUT
 // #define MODE_ROBOMAS_PLUS_INPUT

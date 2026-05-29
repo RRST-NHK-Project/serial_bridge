@@ -66,6 +66,17 @@ void IO_Task(void *) {
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
+void Omni_IO_Task(void *) {
+    TickType_t last_wake = xTaskGetTickCount();
+    Omni_IO_init();
+
+    while (1) {
+        MD_Output();
+        OMNI_IO_TR_Output();
+        ENC_Input();
+        vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
+    }
+}
 
 void ROBOMAS_IO_Task(void *) {
     TickType_t last_wake = xTaskGetTickCount();
@@ -161,6 +172,18 @@ void TR_Output() {
     digitalWrite(TR3, Rx_16Data[19] ? HIGH : LOW);
     digitalWrite(TR4, Rx_16Data[20] ? HIGH : LOW);
     digitalWrite(TR5, Rx_16Data[21] ? HIGH : LOW);
+    if (ENABLE_EXTRA_TR_PIN) {
+        digitalWrite(TR6, Rx_16Data[22] ? HIGH : LOW);
+        digitalWrite(TR7, Rx_16Data[23] ? HIGH : LOW);
+    }
+}
+void OMNI_IO_TR_Output() {
+    digitalWrite(TR1, Rx_16Data[17] ? HIGH : LOW);
+    /*digitalWrite(TR2, Rx_16Data[18] ? HIGH : LOW);
+    digitalWrite(TR3, Rx_16Data[19] ? HIGH : LOW);
+    digitalWrite(TR4, Rx_16Data[20] ? HIGH : LOW);
+    digitalWrite(TR5, Rx_16Data[21] ? HIGH : LOW);*/
+    //TR2~5はENCとダブってるのでオミットされました
     if (ENABLE_EXTRA_TR_PIN) {
         digitalWrite(TR6, Rx_16Data[22] ? HIGH : LOW);
         digitalWrite(TR7, Rx_16Data[23] ? HIGH : LOW);

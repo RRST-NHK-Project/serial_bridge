@@ -20,6 +20,7 @@ void ENCx2_init();
 void ROBOMAS_IO_init();
 void ENCx4_init();
 void IO_init();
+void OMNI_IO_init();
 
 void Input_init() {
     // エンコーダとスイッチの初期化
@@ -99,6 +100,33 @@ void IO_init() {
     pinMode(TR3, OUTPUT);
     pinMode(TR4, OUTPUT);
     pinMode(TR5, OUTPUT);
+    if (ENABLE_EXTRA_TR_PIN) {
+        pinMode(TR6, OUTPUT);
+        pinMode(TR7, OUTPUT);
+    }
+}
+void OMNI_IO_init(){
+    // MDの方向ピンを出力に設定
+    pinMode(MD1D, OUTPUT);
+    pinMode(MD2D, OUTPUT);
+    pinMode(MD3D, OUTPUT);
+    pinMode(MD4D, OUTPUT);
+
+    // PWMの初期化
+    ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+    ledcSetup(1, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+    ledcSetup(2, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+    ledcSetup(3, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+
+    ledcAttachPin(MD1P, 0);
+    ledcAttachPin(MD2P, 1);
+    ledcAttachPin(MD3P, 2);
+    ledcAttachPin(MD4P, 3);
+
+    ENCx4_init();
+
+    // トランジスタのピンを出力に設定
+    pinMode(TR1, OUTPUT);
     if (ENABLE_EXTRA_TR_PIN) {
         pinMode(TR6, OUTPUT);
         pinMode(TR7, OUTPUT);
