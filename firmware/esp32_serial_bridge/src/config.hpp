@@ -15,7 +15,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 // モードの設定，どれか一つをコメントアウト解除する
 //#define MODE_OUTPUT
-//#define MODE_INPUT
+// #define MODE_INPUT
 //#define MODE_IO
 //#define MODE_OMNI_IO
 //#define MODE_ROBOMAS
