@@ -135,17 +135,18 @@ void OMNI_IO_init(){
 
 void ROBOMAS_IO_init() {
 
-    ENCx4_init();
+    //ENCx4_init();
+    ENCx4_SWx4_init();
 
-    ledcSetup(4, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-    ledcSetup(5, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-    if (!ENABLE_EXTRA_TR_PIN) {
-        ledcSetup(6, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-        ledcSetup(7, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-    }
+    // ledcSetup(4, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    // ledcSetup(5, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    // if (!ENABLE_EXTRA_TR_PIN) {
+    //     ledcSetup(6, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    //     ledcSetup(7, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    // }
 
-    ledcAttachPin(SERVO1, 4);
-    ledcAttachPin(SERVO2, 5);
+    // ledcAttachPin(SERVO1, 4);
+    // ledcAttachPin(SERVO2, 5);
 
     // トランジスタのピンを出力に設定
     pinMode(TR1, OUTPUT);
@@ -158,10 +159,10 @@ void ROBOMAS_IO_init() {
         pinMode(TR7, OUTPUT);
     }
 
-    // SW ピン初期化
-    pinMode(SW1, INPUT_PULLUP);
-    pinMode(SW2, INPUT_PULLUP);
-    pinMode(SW3, INPUT_PULLUP);
+    // // SW ピン初期化
+    // pinMode(SW1, INPUT_PULLUP);
+    // pinMode(SW2, INPUT_PULLUP);
+    // pinMode(SW3, INPUT_PULLUP);
 }
 
 // エンコーダ4つ分の初期化
