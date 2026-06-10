@@ -7,7 +7,8 @@ Do not edit src/main.cpp unless you know what you're doing.
 #pragma once
 
 // Must be unique among all connected MCUs.
-#define DEVICE_ID 0x02
+// Use decimal values (example: 99).
+#define DEVICE_ID 2
 
 // Mode selection (define exactly one)
 #define MODE_FULL_IO

@@ -349,11 +349,7 @@ namespace serial_bridge::graphical_ui {
     }
 
     inline std::string format_device_id(uint8_t id) {
-        std::ostringstream oss;
-        oss << "0x" << std::hex << std::uppercase
-            << std::setw(2) << std::setfill('0') << static_cast<int>(id)
-            << std::dec;
-        return oss.str();
+        return std::to_string(static_cast<unsigned>(id));
     }
 
     inline void render_locked() {

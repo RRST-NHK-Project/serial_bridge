@@ -76,8 +76,8 @@ int main(int argc, char *argv[]) {
                     if (it == node_map.end()) {
                         // 未知のデバイス: 新規ノードを作成
                         RCLCPP_INFO(debug_node->get_logger(),
-                                    "New device found: ID=0x%02X port=%s",
-                                    id, port.c_str());
+                                    "New device found: ID=%u port=%s",
+                                    static_cast<unsigned>(id), port.c_str());
                         auto node = std::make_shared<SerialBridgeNode>(id, port,
                                                                        rx_timeout_sec,
                                                                        reconnect_interval_sec);
@@ -90,8 +90,8 @@ int main(int argc, char *argv[]) {
                         // タイミングによって接続直後のノードを置き換える可能性がある（極めて稀）が、
                         // 新ノードが即座に再接続するため実害はない。
                         RCLCPP_INFO(debug_node->get_logger(),
-                                    "Device ID=0x%02X reconnected on new port %s (was %s) — replacing node",
-                                    id, port.c_str(), it->second->get_port().c_str());
+                                    "Device ID=%u reconnected on new port %s (was %s) — replacing node",
+                                    static_cast<unsigned>(id), port.c_str(), it->second->get_port().c_str());
                         executor.remove_node(it->second);
                         known_ports.erase(it->second->get_port());
                         auto node = std::make_shared<SerialBridgeNode>(id, port,

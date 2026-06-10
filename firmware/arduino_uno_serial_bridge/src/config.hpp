@@ -9,7 +9,8 @@ Do not edit src/main.cpp unless you know what you're doing.
 // ================= Basic =================
 
 // Must be unique among all connected MCUs.
-#define DEVICE_ID 0x01
+// Use decimal values (example: 99).
+#define DEVICE_ID 1
 
 // Mode selection (define exactly one).
 // This Uno firmware currently supports only IO mode.

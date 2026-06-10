@@ -83,8 +83,7 @@ static void scanner_graphical_detected_line(const std::map<uint8_t, std::string>
             if (!first)
                 oss << " | ";
             first = false;
-            oss << "0x" << std::hex << std::uppercase << static_cast<int>(id)
-                << std::dec << "->" << port;
+            oss << static_cast<unsigned>(id) << "->" << port;
         }
     }
     serial_bridge::graphical_ui::set_detected_line(oss.str());

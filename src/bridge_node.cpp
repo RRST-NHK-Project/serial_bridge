@@ -67,8 +67,8 @@ SerialBridgeNode::SerialBridgeNode(uint8_t device_id, const std::string &port,
         std::max<int64_t>(serial_bridge::config::kStatusLogPeriodMsMin, status_log_period_ms));
 
     RCLCPP_INFO(this->get_logger(),
-                "Device ID 0x%02X -> Port %s (verbose_packet_log=%s, status_period=%ldms)",
-                device_id_, port_.c_str(), verbose_packet_log_ ? "true" : "false",
+                "Device ID %u -> Port %s (verbose_packet_log=%s, status_period=%ldms)",
+                static_cast<unsigned>(device_id_), port_.c_str(), verbose_packet_log_ ? "true" : "false",
                 static_cast<long>(status_log_period_.count()));
 
     // ---------- ROS Pub/Sub ----------
@@ -225,8 +225,9 @@ void SerialBridgeNode::update() {
         if (rx_id != device_id_) {
             id_mismatch_since_status_++;
             RCLCPP_DEBUG(this->get_logger(),
-                         "ID mismatch rx=0x%02X expected=0x%02X",
-                         rx_id, device_id_);
+                         "ID mismatch rx=%u expected=%u",
+                         static_cast<unsigned>(rx_id),
+                         static_cast<unsigned>(device_id_));
             for (size_t i = 0; i < frame_size; i++)
                 rx_buffer_.pop_front();
             continue;
@@ -260,8 +261,8 @@ void SerialBridgeNode::update() {
             oss << "]";
 
             RCLCPP_INFO(this->get_logger(),
-                        "[ID 0x%02X] RX DATA: %s",
-                        device_id_, oss.str().c_str());
+                        "[ID %u] RX DATA: %s",
+                        static_cast<unsigned>(device_id_), oss.str().c_str());
         }
 
         // consume
@@ -405,8 +406,8 @@ void SerialBridgeNode::maybe_log_status() {
     } else {
         RCLCPP_INFO(
             this->get_logger(),
-            "[ID 0x%02X] status connected=%s rx_hz=%.1f rx_frames=%llu rx_bytes=%llu tx_ok=%llu tx_err=%llu chk_err=%llu id_mismatch=%llu dropped_bytes=%llu rx_buffer=%zu",
-            device_id_,
+            "[ID %u] status connected=%s rx_hz=%.1f rx_frames=%llu rx_bytes=%llu tx_ok=%llu tx_err=%llu chk_err=%llu id_mismatch=%llu dropped_bytes=%llu rx_buffer=%zu",
+            static_cast<unsigned>(device_id_),
             connected_.load() ? "true" : "false",
             rx_hz,
             static_cast<unsigned long long>(rx_frames_since_status_),
@@ -420,8 +421,8 @@ void SerialBridgeNode::maybe_log_status() {
 
         RCLCPP_INFO(
             this->get_logger(),
-            "[ID 0x%02X] bandwidth rx=%.1fB/s tx=%.1fB/s util=%.1f%%",
-            device_id_,
+            "[ID %u] bandwidth rx=%.1fB/s tx=%.1fB/s util=%.1f%%",
+            static_cast<unsigned>(device_id_),
             rx_byte_per_sec,
             tx_byte_per_sec,
             total_line_util_percent);

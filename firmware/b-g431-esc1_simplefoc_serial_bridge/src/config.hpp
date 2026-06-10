@@ -17,7 +17,7 @@ Copyright (c) 2026.
 
 // IDの設定（ROS側からマイコンを識別するために使用）
 // すべてのマイコンで異なる値にすること
-#define DEVICE_ID 0x99
+#define DEVICE_ID 101
 
 // MCU -> PC 送信周期 (ms)
 #define TX_PERIOD_MS 20
