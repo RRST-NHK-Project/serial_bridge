@@ -20,7 +20,6 @@ void ENCx2_init();
 void ROBOMAS_IO_init();
 void ENCx4_init();
 void IO_init();
-void OMNI_IO_init();
 
 void Input_init() {
     // エンコーダとスイッチの初期化
@@ -105,47 +104,21 @@ void IO_init() {
         pinMode(TR7, OUTPUT);
     }
 }
-void OMNI_IO_init(){
-    // MDの方向ピンを出力に設定
-    pinMode(MD1D, OUTPUT);
-    pinMode(MD2D, OUTPUT);
-    pinMode(MD3D, OUTPUT);
-    pinMode(MD4D, OUTPUT);
-
-    // PWMの初期化
-    ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
-    ledcSetup(1, MD_PWM_FREQ, MD_PWM_RESOLUTION);
-    ledcSetup(2, MD_PWM_FREQ, MD_PWM_RESOLUTION);
-    ledcSetup(3, MD_PWM_FREQ, MD_PWM_RESOLUTION);
-
-    ledcAttachPin(MD1P, 0);
-    ledcAttachPin(MD2P, 1);
-    ledcAttachPin(MD3P, 2);
-    ledcAttachPin(MD4P, 3);
-
-    ENCx4_init();
-
-    // トランジスタのピンを出力に設定
-    pinMode(TR1, OUTPUT);
-    if (ENABLE_EXTRA_TR_PIN) {
-        pinMode(TR6, OUTPUT);
-        pinMode(TR7, OUTPUT);
-    }
-}
 
 void ROBOMAS_IO_init() {
 
-    ENCx4_init();
+    //ENCx4_init();
+    ENCx4_SWx4_init();
 
-    ledcSetup(4, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-    ledcSetup(5, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-    if (!ENABLE_EXTRA_TR_PIN) {
-        ledcSetup(6, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-        ledcSetup(7, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
-    }
+    // ledcSetup(4, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    // ledcSetup(5, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    // if (!ENABLE_EXTRA_TR_PIN) {
+    //     ledcSetup(6, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    //     ledcSetup(7, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
+    // }
 
-    ledcAttachPin(SERVO1, 4);
-    ledcAttachPin(SERVO2, 5);
+    // ledcAttachPin(SERVO1, 4);
+    // ledcAttachPin(SERVO2, 5);
 
     // トランジスタのピンを出力に設定
     pinMode(TR1, OUTPUT);
@@ -158,10 +131,10 @@ void ROBOMAS_IO_init() {
         pinMode(TR7, OUTPUT);
     }
 
-    // SW ピン初期化
-    pinMode(SW1, INPUT_PULLUP);
-    pinMode(SW2, INPUT_PULLUP);
-    pinMode(SW3, INPUT_PULLUP);
+    // // SW ピン初期化
+    // pinMode(SW1, INPUT_PULLUP);
+    // pinMode(SW2, INPUT_PULLUP);
+    // pinMode(SW3, INPUT_PULLUP);
 }
 
 // エンコーダ4つ分の初期化

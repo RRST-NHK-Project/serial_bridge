@@ -13,7 +13,6 @@ void Input_Task(void *);      // 入力タスク
 void Output_Task(void *);     // 出力タスク
 void IO_Task(void *);         // 入出力タスク
 void ROBOMAS_IO_Task(void *); // ロボマス入出力タスク
-void Omni_IO_Task(void *);    // 4輪オムニ用入出力タスク
 void MD_Output();
 void Servo_Output();
 void TR_Output();
@@ -23,4 +22,3 @@ void IO_MD_Output();
 void IO_TR_Output();
 void IO_ENC_Input();
 void IO_SW_Input();
-void OMNI_IO_TR_Output();//一応ピンが干渉していないTRを使えるようにしておく
