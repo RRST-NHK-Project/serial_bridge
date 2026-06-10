@@ -14,19 +14,6 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // 10進数で設定すること（例: 99）
 #define DEVICE_ID 0
 
-#define SERIAL_BRIDGE_STRINGIFY_IMPL(x) #x
-#define SERIAL_BRIDGE_STRINGIFY(x) SERIAL_BRIDGE_STRINGIFY_IMPL(x)
-
-constexpr bool serial_bridge_is_decimal_device_id_literal(const char *literal) {
-	return (*literal >= '0' && *literal <= '9') &&
-		   (*(literal + 1) == '\0' ||
-			serial_bridge_is_decimal_device_id_literal(literal + 1));
-}
-
-static_assert(
-	serial_bridge_is_decimal_device_id_literal(SERIAL_BRIDGE_STRINGIFY(DEVICE_ID)),
-	"DEVICE_ID must be written in decimal, for example 99.");
-
 // モードの設定，どれか一つをコメントアウト解除する
 #define MODE_SDM15
 // #define MODE_ENC
