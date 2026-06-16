@@ -9,7 +9,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "pid_task.hpp"
 #include "pin_ctrl_init.hpp"
 #include <Arduino.h>
-#include <defs.hpp>
+#include <old_defs.hpp>
 
 // -------- 状態量 / CAN受信関連 -------- //
 int encoder_count[NUM_MOTOR] = {0};  // エンコーダ値

@@ -4,7 +4,7 @@
 Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 ====================================================================*/
 
-#include "defs.hpp"
+#include "old_defs.hpp"
 #include "driver/pcnt.h"
 #include "frame_data.hpp"
 #include "pin_ctrl_init.hpp"

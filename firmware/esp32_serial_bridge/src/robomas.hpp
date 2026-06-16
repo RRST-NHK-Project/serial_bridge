@@ -6,7 +6,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 #pragma once
 
-#include "defs.hpp"
+#include "old_defs.hpp"
 #include "driver/gpio.h"
 #include "driver/twai.h"
 #include "frame_data.hpp"
