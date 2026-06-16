@@ -23,6 +23,9 @@ void IO_ENC_Input();
 void IO_SW_Input();
 void ROBOMAS_IO_ENC_Input();
 void ROBOMAS_IO_SW_Input();
+void OMNI_IO_init();
+void OMNI_IO_TR_Output();
+
 
 // ================= TASK =================
 
@@ -68,7 +71,7 @@ void IO_Task(void *) {
 }
 void Omni_IO_Task(void *) {
     TickType_t last_wake = xTaskGetTickCount();
-    Omni_IO_init();
+    OMNI_IO_init();
 
     while (1) {
         MD_Output();
