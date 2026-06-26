@@ -19,6 +19,12 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // #define MODE_IO
 //  #define MODE_DEBUG
 
+// CANのノード割り当て設定
+// 1つのCANバス上で最大4ノードまで対応し、24スロットを4つのノードに分配する
+#define CAN_NODE_COUNT 4
+#define CAN_SLOTS_PER_NODE 6
+#define CAN_NODE_INDEX 0
+
 // ================= MD関連 =================
 
 // MD関連の設定，使用するMDに応じて変更
