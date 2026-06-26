@@ -14,10 +14,9 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define DEVICE_ID 102
 
 // モードの設定，どれか一つをコメントアウト解除すること
-#define MODE_IO
-// #define MODE_SDM15
-//  #define MODE_ROBOMAS
-//  #define MODE_ROBOMAS_AD
+#define MODE_CAN
+// #define MODE_CAN_HOST
+// #define MODE_IO
 //  #define MODE_DEBUG
 
 // ================= MD関連 =================
@@ -62,5 +61,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // 以下の設定は必要に応じて変更
 #define ENABLE_LED 1 // 状態表示LEDを有効にする場合1に設定
 
-#define SDM15_UART_TX_PIN 4
-#define SDM15_UART_RX_PIN 3
+// 汎用（mMULTI）ポートの設定（スイッチ:0, サーボ:1）
+#define MULTI1 0
+#define MULTI2 0
+#define MULTI3 0

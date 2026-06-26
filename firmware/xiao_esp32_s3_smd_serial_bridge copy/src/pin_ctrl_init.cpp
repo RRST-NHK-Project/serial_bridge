@@ -24,9 +24,15 @@ void IO_init() {
     ledcSetup(5, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
     ledcSetup(6, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
 
-    ledcAttachPin(SERVO1, 4);
-    ledcAttachPin(SERVO2, 5);
-    ledcAttachPin(SERVO3, 6);
+    if (MULTI1 == 1) {
+        ledcAttachPin(SERVO1, 4);
+    }
+    if (MULTI2 == 1) {
+        ledcAttachPin(SERVO2, 5);
+    }
+    if (MULTI3 == 1) {
+        ledcAttachPin(SERVO3, 6);
+    }
 
     // プルアップを有効化
     gpio_set_pull_mode((gpio_num_t)ENC1_A, GPIO_PULLUP_ONLY);
@@ -107,7 +113,13 @@ void IO_init() {
     pcnt_set_filter_value(PCNT_UNIT_1, PCNT_FILTER_VALUE);
 
     // SW ピン初期化
-    pinMode(SW1, INPUT_PULLUP);
-    pinMode(SW2, INPUT_PULLUP);
-    pinMode(SW3, INPUT_PULLUP);
+    if (MULTI1 == 0) {
+        pinMode(SW1, INPUT_PULLUP);
+    }
+    if (MULTI2 == 0) {
+        pinMode(SW2, INPUT_PULLUP);
+    }
+    if (MULTI3 == 0) {
+        pinMode(SW3, INPUT_PULLUP);
+    }
 }

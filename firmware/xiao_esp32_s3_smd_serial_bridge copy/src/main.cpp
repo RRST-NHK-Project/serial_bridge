@@ -10,6 +10,7 @@ Description:
 Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 ====================================================================*/
 
+#include "can_task.hpp"
 #include "config.hpp"
 #include "defs.hpp"
 #include "pin_ctrl_task.hpp"
@@ -38,6 +39,7 @@ void setup() {
     // ledcSetup(1, 20000, 8);
     // ledcAttachPin(LED, 1);
 
+#if defined(MODE_CAN_HOST)
     xTaskCreate(
         serialTask,   // タスク関数
         "serialTask", // タスク名
@@ -45,6 +47,18 @@ void setup() {
         NULL,
         10, // 優先度
         NULL);
+#endif
+
+#if defined(MODE_CAN) || defined(MODE_CAN_HOST)
+    canInit();
+    xTaskCreate(
+        canTask,   // タスク関数
+        "canTask", // タスク名
+        4096,      // スタックサイズ（words）
+        NULL,
+        10, // 優先度
+        NULL);
+#endif
 
     // モードに応じた初期化
     // #if defined(MODE_OUTPUT)
@@ -77,6 +91,19 @@ void setup() {
         11, // 優先度
         NULL);
 
+#elif defined(MODE_CAN)
+    // CANノードモード初期化
+    xTaskCreate(
+        IO_Task,   // タスク関数
+        "IO_Task", // タスク名
+        2048,      // スタックサイズ（words）
+        NULL,
+        11, // 優先度
+        NULL);
+
+#elif defined(MODE_CAN_HOST)
+    // CANホストモード初期化
+
 #elif defined(MODE_DEBUG)
     // デバッグモード初期化
 
@@ -108,7 +135,7 @@ void setup() {
 #error "No mode defined. Please define one mode in config.hpp."
 #endif
 
-#if (defined(MODE_OUTPUT) + defined(MODE_INPUT) + defined(MODE_IO) + defined(MODE_DEBUG)) != 1
+#if (defined(MODE_OUTPUT) + defined(MODE_INPUT) + defined(MODE_IO) + defined(MODE_CAN) + defined(MODE_CAN_HOST) + defined(MODE_DEBUG)) != 1
 #error "Invalid mode configuration. Please define exactly *one mode* in config.hpp."
 #endif
 }
