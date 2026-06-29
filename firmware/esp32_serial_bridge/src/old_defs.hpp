@@ -54,24 +54,24 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define TR7 23
 
 // エンコーダ
-#define ENC1_A 33
-#define ENC1_B 32
-#define ENC2_A 23
-#define ENC2_B 22
-#define ENC3_A 27
-#define ENC3_B 26
-#define ENC4_A 21
-#define ENC4_B 19
+#define ENC1_A 19
+#define ENC1_B 21
+#define ENC2_A 22
+#define ENC2_B 23
+#define ENC3_A 15
+#define ENC3_B 16
+#define ENC4_A 17
+#define ENC4_B 18
 
 // スイッチ
-#define SW1 18
-#define SW2 14
-#define SW3 17
-#define SW4 13
-#define SW5 16
-#define SW6 12
-#define SW7 15
-#define SW8 5
+#define SW1 5
+#define SW2 12
+#define SW3 13
+#define SW4 14
+#define SW5 15
+#define SW6 16
+#define SW7 17
+#define SW8 18
 
 // モータ数
 #define motor 2
