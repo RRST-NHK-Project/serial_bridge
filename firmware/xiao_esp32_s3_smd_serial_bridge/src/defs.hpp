@@ -46,8 +46,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define motor 2
 
 // CAN (MCP2561 + TWAI)
-#define CAN_RX 18
-#define CAN_TX 17
+#define CAN_RX 2
+#define CAN_TX 1
 
 // MD用
 #define MD_PWM_MAX ((1 << MD_PWM_RESOLUTION) - 1)

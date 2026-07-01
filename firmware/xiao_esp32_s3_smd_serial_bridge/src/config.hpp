@@ -11,11 +11,11 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // ================= 基本設定 =================
 
 // IDの設定，ROS側からマイコンを識別するために使用，すべてのマイコンで異なる値にすること
-#define DEVICE_ID 102
+#define DEVICE_ID 101
 
 // モードの設定，どれか一つをコメントアウト解除すること
-#define MODE_CAN
-// #define MODE_CAN_HOST
+// #define MODE_CAN
+#define MODE_CAN_HOST
 // #define MODE_IO
 //  #define MODE_DEBUG
 

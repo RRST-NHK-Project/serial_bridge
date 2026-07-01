@@ -39,7 +39,7 @@ void setup() {
     // ledcSetup(1, 20000, 8);
     // ledcAttachPin(LED, 1);
 
-#if defined(MODE_CAN_HOST)
+#if defined(MODE_CAN_HOST) || defined(MODE_IO) || defined(MODE_DEBUG)
     xTaskCreate(
         serialTask,   // タスク関数
         "serialTask", // タスク名
@@ -135,7 +135,7 @@ void setup() {
 #error "No mode defined. Please define one mode in config.hpp."
 #endif
 
-#if (defined(MODE_OUTPUT) + defined(MODE_INPUT) + defined(MODE_IO) + defined(MODE_CAN) + defined(MODE_CAN_HOST) + defined(MODE_DEBUG)) != 1
+#if (defined(MODE_IO) + defined(MODE_CAN) + defined(MODE_CAN_HOST) + defined(MODE_DEBUG)) != 1
 #error "Invalid mode configuration. Please define exactly *one mode* in config.hpp."
 #endif
 }
