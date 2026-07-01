@@ -169,14 +169,22 @@ void setup() {
     //     9, // 優先度
     //     NULL);
 
+    // xTaskCreate(
+    //     M2006_Task,   // タスク関数
+    //     "M2006_Task", // タスク名
+    //     2048,         // スタックサイズ（words）
+    //     NULL,
+    //     9, // 優先度
+    //     NULL);
+
     xTaskCreate(
-        M2006_Task,   // タスク関数
-        "M2006_Task", // タスク名
-        2048,         // スタックサイズ（words）
+        gm6020_Task,   // タスク関数
+        "gm6020_Task", // タスク名
+        2048,          // スタックサイズ（words）
         NULL,
         9, // 優先度
         NULL);
-
+        
     xTaskCreate(
         ROBOMAS_IO_Task,   // タスク関数
         "ROBOMAS_IO_Task", // タスク名

@@ -45,10 +45,13 @@ float vel_out[NUM_MOTOR] = {0};        // 最終速度出力
 // -------- 状態量 / CAN受信関連 -------- //
 float angle_m3508[NUM_MOTOR] = {0}; // 角度
 float angle_m2006[NUM_MOTOR] = {0}; // 角度
+float angle_gm6020[NUM_MOTOR] = {0}; // 角度
 float vel_m3508[NUM_MOTOR] = {0};   // 速度
 float vel_m2006[NUM_MOTOR] = {0};   // 速度
+float vel_gm6020[NUM_MOTOR] = {0};   // 速度
 float c_m3508[NUM_MOTOR] = {0};           //
 float c_m2006[NUM_MOTOR] = {0};           //
+float c_gm6020[NUM_MOTOR] = {0};           //
 
 unsigned long lastPidTime = 0; // PID制御用タイマー
 
@@ -56,6 +59,11 @@ unsigned long lastPidTime = 0; // PID制御用タイマー
 float kp_pos = 0.8f;  // 角度比例ゲイン
 float ki_pos = 0.01f; // 角度積分ゲイン
 float kd_pos = 0.02f; // 角度微分ゲイン
+
+float kp_pos_gm6020 = 0.02;
+float ki_pos_gm6020 = 0.0;
+float kd_pos_gm6020 = 0.0; // 微分は控えめに
+
 
 // -------- 速度PIDゲイン -------- //
 float kp_vel_m3508 = 0.8;
@@ -65,7 +73,6 @@ float kd_vel_m3508 = 0.05; // 微分は控えめに
 float kp_vel_m2006 = 0.8;
 float ki_vel_m2006 = 0.0;
 float kd_vel_m2006 = 0.02; // 微分は控えめに
-
 
 // -------- 電流PIDゲイン -------- //
 float kp_cur = 0.01;
@@ -127,6 +134,33 @@ void send_cur_c610(float cur_array[NUM_MOTOR])
         Serial.println("[ERR] twai_transmit failed");
     }
     
+}
+
+void send_cur_gm6020(float cur_array[NUM_MOTOR])
+{
+    twai_message_t tx;       // 送信用メッセージ
+    tx.identifier = 0x1FF;   // CAN ID
+    tx.extd = 0;             // 標準フレーム
+    tx.rtr = 0;              // データフレーム
+    tx.data_length_code = 8; // 8バイト
+
+    // GM6020 の仕様: 電流指令はおおむね -16384 ～ +16384（±20A相当）
+    constexpr float MAX_CUR = 3.0f;
+    constexpr int16_t MAX_CUR_VAL = 16384;
+
+    for (int i = 0; i < NUM_MOTOR; i++)
+    {
+        float amp = constrain_double(cur_array[i], -MAX_CUR, MAX_CUR);
+        int16_t val = static_cast<int16_t>(amp * (MAX_CUR_VAL / MAX_CUR));
+
+        tx.data[i * 2] = (val >> 8) & 0xFF;
+        tx.data[i * 2 + 1] = val & 0xFF;
+    }
+
+    if (twai_transmit(&tx, pdMS_TO_TICKS(20)) != ESP_OK)
+    {
+        Serial.println("[ERR] twai_transmit failed");
+    }
 }
 
 
@@ -259,6 +293,56 @@ void M2006_Task(void *pvParameters)
     }
 }
 
+void gm6020_Task(void *pvParameters)
+{
+    // 初期化
+    lastPidTime = millis();
+
+    while (1)
+    {
+
+        for (int i = 0; i < NUM_MOTOR; i++) {
+            // 2026/02/14, 7,8,9,10から5,6,7,8に変更
+            target_angle[i] = Rx_16Data[i];
+        }
+        unsigned long now = millis();
+        float dt = (now - lastPidTime) / 1000.0f;
+        if (dt <= 0)
+            dt = 0.000001f;
+        if (dt > 0.02f)
+            dt = 0.02f;
+        lastPidTime = now;
+         // TWAI受信処理
+        twai_receive_feedback_gm6020();
+        for (int i = 0; i < NUM_MOTOR; i++)
+        {
+           c_gm6020[i] = pid(target_angle[i], angle_gm6020[i], pos_error_prev[i], pos_integral[i], kp_pos_gm6020, ki_pos_gm6020, kd_pos_gm6020, dt);
+           motor_output_current[i] = constrain_double(c_gm6020[i], -3, 3);
+        }
+
+        // 送信
+        send_cur_gm6020(motor_output_current);
+
+        // debug
+
+        //場所がないのでMDかぶらせてる
+        Tx_16Data[11] = static_cast<int16_t>(angle_gm6020[0]);
+        Tx_16Data[12] = static_cast<int16_t>(angle_gm6020[1]);
+        Tx_16Data[13] = static_cast<int16_t>(angle_gm6020[2]);
+        Tx_16Data[14] = static_cast<int16_t>(angle_gm6020[3]);
+
+        Tx_16Data[15] = static_cast<int16_t>(vel_gm6020[0]);
+        Tx_16Data[16] = static_cast<int16_t>(vel_gm6020[1]);
+        Tx_16Data[17] = static_cast<int16_t>(vel_gm6020[2]);
+        Tx_16Data[18] = static_cast<int16_t>(vel_gm6020[3]);
+
+        Tx_16Data[19] = static_cast<int16_t>(c_gm6020[1]);
+        Tx_16Data[20] = static_cast<int16_t>(motor_output_current[1]*100);
+        Tx_16Data[21] = static_cast<int16_t>(encoder_count[1]);
+
+        vTaskDelay(1);
+    }
+}
 
 void twai_receive_feedback() {
     twai_message_t rx_msg;
@@ -295,6 +379,40 @@ void twai_receive_feedback() {
         vel_m2006[m] = rpm[m] / gear_m2006;
         c_m2006[m] = current[m] * 10.0f / 10000.0f;
 
+    }
+}
+
+void twai_receive_feedback_gm6020() {
+    twai_message_t rx_msg;
+
+    while (twai_receive(&rx_msg, 0) == ESP_OK) {
+        if (rx_msg.data_length_code != 8)
+            continue;
+        if (rx_msg.identifier < 0x205 || rx_msg.identifier > 0x207)
+            continue;
+
+        int m = rx_msg.identifier - 0x205;
+
+        encoder_count[m] = (int16_t)(rx_msg.data[0] << 8 | rx_msg.data[1]);
+        rpm[m] = (int16_t)(rx_msg.data[2] << 8 | rx_msg.data[3]);
+        current[m] = (int16_t)(rx_msg.data[4] << 8 | rx_msg.data[5]);
+
+        // エンコーダ回転数計算
+        int diff = encoder_count[m] - last_encoder[m];
+        if (diff > HALF_ENCODER)
+            rotation_count[m]--;
+        else if (diff < -HALF_ENCODER)
+            rotation_count[m]++;
+
+        last_encoder[m] = encoder_count[m];
+
+        total_encoder[m] =
+            rotation_count[m] * ENCODER_MAX + encoder_count[m];
+
+        angle_gm6020[m] = total_encoder[m] * (360.0f / 8192.0f); // GM6020のエンコーダ分解能は8192
+        vel_gm6020[m] = rpm[m];
+        c_gm6020[m] = current[m] ;//* 3.0f / 16384.0f;
+        
     }
 }
 
