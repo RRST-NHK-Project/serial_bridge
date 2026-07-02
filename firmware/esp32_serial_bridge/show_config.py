@@ -6,6 +6,7 @@ config_path = os.path.join(env["PROJECT_DIR"], "src", "config.hpp")
 
 device_id = "unknown"
 mode = "unknown"
+board = "unknown"
 
 if os.path.exists(config_path):
     with open(config_path) as f:
@@ -20,11 +21,16 @@ if os.path.exists(config_path):
             if m:
                 mode = m.group(1)
 
+                
+            m = re.match(r"#define\s+BOARD_(\w+)", line)
+            if m:
+                board = m.group(1)
 print("")
 print("========================================")
 print(" Board Config Info")
 print("----------------------------------------")
 print(" DEVICE_ID :", device_id)
 print(" MODE      :", mode)
+print(" BOARD     :", board)
 print("========================================")
 print("")
