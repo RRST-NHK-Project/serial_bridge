@@ -22,7 +22,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // #define MODE_CAN
 #define MODE_CAN_HOST
 // #define MODE_IO
-//  #define MODE_DEBUG
+// #define MODE_DEBUG
+// #define MODE_CAN_MONITOR
 
 // ================= MD関連 =================
 
@@ -61,17 +62,20 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define SERVO4_MAX_DEG 270
 #define SERVO4_INIT_DEG 0
 
-// ================= 詳細設定（通常は変更不要） =================
+// ================= 高度な設定（通常は変更不要） =================
 
 // 以下の設定は必要に応じて変更
 #define ENABLE_LED 1 // 状態表示LEDを有効にする場合1に設定
 
-// 汎用（mMULTI）ポートの設定（スイッチ:0, サーボ:1）
+// 汎用（MULTI）ポートの設定（スイッチ:0, サーボ:1）
 #define MULTI1 0
 #define MULTI2 0
 #define MULTI3 0
 
 // CANのノード割り当て設定
-// 1つのCANバス上で最大4ノードまで対応し、24スロットを4つのノードに分配する
+// 1つのCANバス上で最大4ノードまで対応し、1ノードあたり5スロットをCANで送受信する
 #define CAN_NODE_COUNT 4
-#define CAN_SLOTS_PER_NODE 6
+#define CAN_SLOTS_PER_NODE 5
+// CAN_ID の下位2桁をノード番号として使用する。
+// 例: CAN_ID=101 -> node 1, CAN_ID=102 -> node 2, CAN_ID=103 -> node 3, CAN_ID=104 -> node 4
+#define CAN_NODE_INDEX ((CAN_ID % 100U) - 1U)

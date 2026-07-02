@@ -20,3 +20,15 @@ volatile int16_t Rx_16Data[Rx16NUM] = {0}; // 受信用データ配列
 9~16: SERVO1~8
 17~23: TR1~7
 */
+
+volatile int16_t CanIoRxData[CAN_IO_SLOT_COUNT] = {0}; // CANモード用の受信用IO値
+/*
+0~3: MD1~4
+4: SERVO1
+*/
+
+volatile int16_t CanIoTxData[CAN_IO_SLOT_COUNT] = {0}; // CANモード用の送信用IO値
+/*
+0~2: SW1~3
+3~4: ENC1~2
+*/

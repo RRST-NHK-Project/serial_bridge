@@ -42,6 +42,9 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "defs.hpp"
 #include "frame_data.hpp"
 #include <Arduino.h>
+#include <cstring>
+
+static portMUX_TYPE g_frame_lock = portMUX_INITIALIZER_UNLOCKED;
 
 #define START_BYTE 0xAA // ROS側と揃える，基本的に変更する必要はない，フレーム破損時の復帰に使用
 
@@ -132,6 +135,12 @@ void rxTask(void *) {
 // ================= TX =================
 // 送信用関数
 void send_frame() {
+    int16_t tx_data_snapshot[Tx16NUM] = {0};
+
+    portENTER_CRITICAL(&g_frame_lock);
+    std::memcpy(tx_data_snapshot, (const void *)Tx_16Data, sizeof(tx_data_snapshot));
+    portEXIT_CRITICAL(&g_frame_lock);
+
     Tx_8Data[0] = START_BYTE;
     Tx_8Data[1] = DEVICE_ID;
     Tx_8Data[2] = Tx16NUM * 2;
@@ -141,8 +150,8 @@ void send_frame() {
     checksum ^= Tx_8Data[2];
 
     for (int i = 0; i < Tx16NUM; i++) {
-        Tx_8Data[3 + i * 2] = (uint8_t)(Tx_16Data[i] >> 8);
-        Tx_8Data[3 + i * 2 + 1] = (uint8_t)(Tx_16Data[i] & 0xFF);
+        Tx_8Data[3 + i * 2] = (uint8_t)(tx_data_snapshot[i] >> 8);
+        Tx_8Data[3 + i * 2 + 1] = (uint8_t)(tx_data_snapshot[i] & 0xFF);
         checksum ^= Tx_8Data[3 + i * 2];
         checksum ^= Tx_8Data[3 + i * 2 + 1];
     }
@@ -204,15 +213,8 @@ void receive_frame() {
             if (rx_checksum == b && rx_id == DEVICE_ID) { // データが破損していないこと，IDが自機と一致することを確認
 
                 if (ENABLE_LED) {
-                    // LEDで受信表示
-                    uint32_t LED_TOGGLE_MS = 500;
-                    static uint32_t last_led_toggle_ms = 0;
-
-                    uint32_t now = millis();
-                    if (now - last_led_toggle_ms >= LED_TOGGLE_MS) {
-                        digitalWrite(LED, !digitalRead(LED));
-                        last_led_toggle_ms = now;
-                    }
+                    // ホスト側ではシリアル受信時にLEDを点灯させる
+                    digitalWrite(LED, HIGH);
                 }
 
                 // ===== 生フレームの保存（受信したデータをフレーム形式に復元） =====
@@ -229,11 +231,16 @@ void receive_frame() {
 
                 // ===== int16 デコード =====
                 // 上位・下位で分割されたデータを復元
+                int16_t decoded_values[Rx16NUM] = {0};
                 for (int i = 0; i < rx_len / 2; i++) {
-                    Rx_16Data[i] =
+                    decoded_values[i] =
                         (int16_t)((rx_buf[i * 2] << 8) |
                                   rx_buf[i * 2 + 1]);
                 }
+
+                portENTER_CRITICAL(&g_frame_lock);
+                std::memcpy((void *)Rx_16Data, decoded_values, sizeof(decoded_values));
+                portEXIT_CRITICAL(&g_frame_lock);
 
 #if ENABLE_LOOPBACK
                 // ===== LOOPBACK =====

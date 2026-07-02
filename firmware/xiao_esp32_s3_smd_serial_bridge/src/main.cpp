@@ -49,7 +49,7 @@ void setup() {
         NULL);
 #endif
 
-#if defined(MODE_CAN) || defined(MODE_CAN_HOST)
+#if defined(MODE_CAN) || defined(MODE_CAN_HOST) || defined(MODE_CAN_MONITOR)
     canInit();
     xTaskCreate(
         canTask,   // タスク関数
@@ -139,11 +139,16 @@ void setup() {
         11, // 優先度
         NULL);
 
+#elif defined(MODE_CAN_MONITOR)
+    // CANモニタモード初期化
+    // シリアルモニタへ受信したCAN IDと生データだけを表示する
+    // 追加のIOタスクは起動しない
+
 #else
 #error "No mode defined. Please define one mode in config.hpp."
 #endif
 
-#if (defined(MODE_IO) + defined(MODE_CAN) + defined(MODE_CAN_HOST) + defined(MODE_DEBUG)) != 1
+#if (defined(MODE_IO) + defined(MODE_CAN) + defined(MODE_CAN_HOST) + defined(MODE_DEBUG) + defined(MODE_CAN_MONITOR)) != 1
 #error "Invalid mode configuration. Please define exactly *one mode* in config.hpp."
 #endif
 }
