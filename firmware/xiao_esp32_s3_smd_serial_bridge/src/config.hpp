@@ -11,11 +11,10 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // ================= 基本設定 =================
 
 // IDの設定，シリアルフレームのDEVICE_IDとして使用します。
-// 例: 101, 102, 103, 104
 #define DEVICE_ID 101
 
 // CAN_IDは3桁形式で指定します。
-// AはCANバス番号、BCはそのバス内の固有デバイス番号です。
+// 1桁目はバス番号、末尾2桁はノード番号を表します。
 // 例: 101, 102, 103, 104
 #define CAN_ID 101
 
@@ -24,41 +23,6 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define MODE_CAN_HOST
 // #define MODE_IO
 //  #define MODE_DEBUG
-
-// CANのノード割り当て設定
-// 1つのCANバス上で最大4ノードまで対応し、24スロットを4つのノードに分配する
-#define CAN_NODE_COUNT 4
-#define CAN_SLOTS_PER_NODE 6
-
-#ifndef DEVICE_ID
-#error "DEVICE_ID must be defined in config.hpp"
-#endif
-
-#if defined(MODE_CAN) || defined(MODE_CAN_HOST)
-#ifndef CAN_ID
-#error "CAN_ID must be defined in config.hpp for CAN/MODE_CAN_HOST"
-#endif
-
-#ifndef CAN_NODE_INDEX
-#define CAN_NODE_INDEX ((CAN_ID % 100) - 1)
-#endif
-
-#if CAN_ID < 100 || CAN_ID > 999
-#error "CAN_ID must be a 3-digit value, e.g. 101..104"
-#endif
-
-#if (CAN_ID % 100) < 1 || (CAN_ID % 100) > CAN_NODE_COUNT
-#error "CAN_ID bottom two digits must be between 01 and CAN_NODE_COUNT"
-#endif
-
-#if DEVICE_ID < 100 || DEVICE_ID > 999
-#error "DEVICE_ID must be a 3-digit value, e.g. 101..104"
-#endif
-#else
-#ifndef CAN_NODE_INDEX
-#define CAN_NODE_INDEX 0
-#endif
-#endif
 
 // ================= MD関連 =================
 
@@ -106,3 +70,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define MULTI1 0
 #define MULTI2 0
 #define MULTI3 0
+
+// CANのノード割り当て設定
+// 1つのCANバス上で最大4ノードまで対応し、24スロットを4つのノードに分配する
+#define CAN_NODE_COUNT 4
+#define CAN_SLOTS_PER_NODE 6
