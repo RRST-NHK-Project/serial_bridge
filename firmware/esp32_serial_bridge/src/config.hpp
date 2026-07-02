@@ -30,6 +30,16 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define BOARD_V4_0 //元々使ってた基板
 //#define BOARD_V6_0 //夏ロボからの新しい基板
 
+//任意の自然数n番目の基板に対してv(n)_defs.hppをincludeするような書き方を勝手に搭載してみた。
+//ただし、新しくピンの定義ファイルを追加したときに初期設定として全てのファイルに以下を書き込まなければいけなくなってしまった。
+/*
+#elif defined(BOARD_V(n))
+#include "v(n)_defs.hpp"
+
+#if (defined(BOARD_V4_0) + defined(BOARD_V6_0) + ... + defined(BOARD_V(n))) != 1
+*/
+//若干めんどいからこれを採用すべきか迷ってる
+
 // ================= MD関連 =================
 
 // MD関連の設定，使用するMDに応じて変更
