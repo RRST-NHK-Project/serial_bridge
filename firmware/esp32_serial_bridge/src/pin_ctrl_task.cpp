@@ -11,13 +11,13 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 #include "config.hpp"
 
-#if defined(OLD_BOARD)
-#include "old_defs.hpp"
-#elif defined(NEW_BOARD)
-#include "new_defs.hpp"
+#if defined(BOARD_V4_0)
+#include "v4.0_defs.hpp"
+#elif defined(BOARD_V6_0)
+#include "v6.0_defs.hpp"
 #endif
 
-#if (defined(OLD_BOARD) + defined(NEW_BOARD)) != 1
+#if (defined(BOARD_V4_0) + defined(BOARD_V6_0)) != 1
 #error "Invalid board definition. Please define *one board* in config.hpp."
 #endif
 

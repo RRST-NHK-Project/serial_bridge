@@ -24,9 +24,11 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 //#define MODE_ROBOMAS_PLUS_IO
 // #define MODE_DEBUG
 
-// ================= 使用する基板の設定 =================
-#define OLD_BOARD //元々使ってた基板
-//#define NEW_BOARD //夏ロボからの新しい基板
+// ================= 基板設定 =================
+
+// 使用する基板の設定，どちらか一つをコメントアウト解除する
+#define BOARD_V4_0 //元々使ってた基板
+//#define BOARD_V6_0 //夏ロボからの新しい基板
 
 // ================= MD関連 =================
 
