@@ -11,16 +11,6 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 #include "config.hpp"
 
-#if defined(BOARD_V4_0)
-#include "v4.0_defs.hpp"
-#elif defined(BOARD_V6_0)
-#include "v6.0_defs.hpp"
-#endif
-
-#if (defined(BOARD_V4_0) + defined(BOARD_V6_0)) != 1
-#error "Invalid board definition. Please define *one board* in config.hpp."
-#endif
-
 constexpr uint32_t CTRL_PERIOD_MS = 5; // ピン更新周期（ミリ秒）
 
 void MD_Output();
