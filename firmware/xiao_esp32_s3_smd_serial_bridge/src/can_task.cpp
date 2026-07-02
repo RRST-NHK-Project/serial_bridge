@@ -92,6 +92,39 @@ static void canRecvNodeSlotBlock(int16_t *buffer, uint8_t node_index) {
     }
 }
 
+static void canRecvAllNodeSlotBlocks(int16_t *buffer) {
+    twai_message_t message{};
+
+    while (twai_receive(&message, pdMS_TO_TICKS(0)) == ESP_OK) {
+        if (message.data_length_code != CAN_FRAME_DLC) {
+            continue;
+        }
+
+        const uint8_t frame_node = canFrameNodeIndex(message.identifier);
+        if (frame_node >= CAN_NODE_COUNT) {
+            continue;
+        }
+
+        const uint8_t chunk = canFrameChunkIndex(message.identifier);
+        if (chunk >= CAN_CHUNK_COUNT_PER_NODE) {
+            continue;
+        }
+
+        const uint8_t slot_offset = frame_node * CAN_SLOTS_PER_NODE + chunk * CAN_VALUES_PER_FRAME;
+        for (uint8_t i = 0; i < CAN_VALUES_PER_FRAME; i++) {
+            const uint8_t slot_index = slot_offset + i;
+            if (slot_index >= Rx16NUM) {
+                break;
+            }
+
+            const uint8_t byte_index = i * 2;
+            const int16_t hi = (int16_t)((uint8_t)message.data[byte_index] << 8);
+            const int16_t lo = (int16_t)((uint8_t)message.data[byte_index + 1]);
+            buffer[slot_index] = (int16_t)(hi | lo);
+        }
+    }
+}
+
 static void applyNodeSlotBlockToLocalControl(const int16_t *slot_buffer, uint8_t node_index) {
     const uint8_t slot_offset = node_index * CAN_SLOTS_PER_NODE;
 
@@ -142,9 +175,8 @@ void canTask(void *) {
 
     while (1) {
 #if defined(MODE_CAN_HOST)
-        for (uint8_t node_index = 0; node_index < CAN_NODE_COUNT; node_index++) {
-            canRecvNodeSlotBlock((int16_t *)Tx_16Data, node_index);
-        }
+        std::memset((void *)Tx_16Data, 0, sizeof(Tx_16Data));
+        canRecvAllNodeSlotBlocks((int16_t *)Tx_16Data);
 
         if (xTaskGetTickCount() - last_tx >= pdMS_TO_TICKS(CAN_TX_PERIOD_MS)) {
             for (uint8_t node_index = 0; node_index < CAN_NODE_COUNT; node_index++) {

@@ -103,6 +103,14 @@ void setup() {
 
 #elif defined(MODE_CAN_HOST)
     // CANホストモード初期化
+    // HOSTも1バス4マイコンの一台としてIO_Taskを回す
+    xTaskCreate(
+        IO_Task,   // タスク関数
+        "IO_Task", // タスク名
+        2048,      // スタックサイズ（words）
+        NULL,
+        11, // 優先度
+        NULL);
 
 #elif defined(MODE_DEBUG)
     // デバッグモード初期化
