@@ -6,11 +6,23 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 #pragma once
 
-#include "old_defs.hpp"
 #include "driver/gpio.h"
 #include "driver/twai.h"
 #include "frame_data.hpp"
 #include <Arduino.h>
+
+#include "config.hpp"
+
+#if defined(OLD_BOARD)
+#include "old_defs.hpp"
+#elif defined(NEW_BOARD)
+#include "new_defs.hpp"
+#endif
+
+#if (defined(OLD_BOARD) + defined(NEW_BOARD)) != 1
+#error "Invalid board definition. Please define *one board* in config.hpp."
+#endif
+
 
 void send_cur_all(float cur_array[NUM_MOTOR]);
 void send_cur_c610(float cur_array[NUM_MOTOR]);

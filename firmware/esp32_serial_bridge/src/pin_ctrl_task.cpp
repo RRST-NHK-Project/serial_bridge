@@ -4,11 +4,22 @@
 Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 ====================================================================*/
 
-#include "old_defs.hpp"
 #include "driver/pcnt.h"
 #include "frame_data.hpp"
 #include "pin_ctrl_init.hpp"
 #include <Arduino.h>
+
+#include "config.hpp"
+
+#if defined(OLD_BOARD)
+#include "old_defs.hpp"
+#elif defined(NEW_BOARD)
+#include "new_defs.hpp"
+#endif
+
+#if (defined(OLD_BOARD) + defined(NEW_BOARD)) != 1
+#error "Invalid board definition. Please define *one board* in config.hpp."
+#endif
 
 constexpr uint32_t CTRL_PERIOD_MS = 5; // ピン更新周期（ミリ秒）
 
@@ -186,11 +197,7 @@ void OMNI_IO_TR_Output() {
     digitalWrite(TR3, Rx_16Data[19] ? HIGH : LOW);
     digitalWrite(TR4, Rx_16Data[20] ? HIGH : LOW);
     digitalWrite(TR5, Rx_16Data[21] ? HIGH : LOW);*/
-    //TR2~5はENCとダブってるのでオミットされました
-    if (ENABLE_EXTRA_TR_PIN) {
-        digitalWrite(TR6, Rx_16Data[22] ? HIGH : LOW);
-        digitalWrite(TR7, Rx_16Data[23] ? HIGH : LOW);
-    }
+    //TR2~5と6.7はENCとダブってるのでオミットされました
 }
 
 void IO_MD_Output() {

@@ -39,9 +39,20 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 ====================================================================*/
 
 #include "config.hpp"
-#include "new_defs.hpp"
 #include "frame_data.hpp"
 #include <Arduino.h>
+
+#include "config.hpp"
+
+#if defined(OLD_BOARD)
+#include "old_defs.hpp"
+#elif defined(NEW_BOARD)
+#include "new_defs.hpp"
+#endif
+
+#if (defined(OLD_BOARD) + defined(NEW_BOARD)) != 1
+#error "Invalid board definition. Please define *one board* in config.hpp."
+#endif
 
 #define START_BYTE 0xAA // ROS側と揃える，基本的に変更する必要はない，フレーム破損時の復帰に使用
 

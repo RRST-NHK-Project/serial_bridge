@@ -11,18 +11,22 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // ================= 基本設定 =================
 
 // IDの設定，ROS側からマイコンを識別するために使用，すべてのマイコンで異なる値にすること
-#define DEVICE_ID 0x01
+#define DEVICE_ID 0x02
 
 // モードの設定，どれか一つをコメントアウト解除する
 //#define MODE_OUTPUT
-//#define MODE_INPUT
+#define MODE_INPUT
 //#define MODE_IO
-#define MODE_OMNI_IO
+//#define MODE_OMNI_IO
 //#define MODE_ROBOMAS
 // #define MODE_ROBOMAS_PLUS_OUTPUT
 // #define MODE_ROBOMAS_PLUS_INPUT
 //#define MODE_ROBOMAS_PLUS_IO
 // #define MODE_DEBUG
+
+// ================= 使用する基板の設定 =================
+#define OLD_BOARD //元々使ってた基板
+//#define NEW_BOARD //夏ロボからの新しい基板
 
 // ================= MD関連 =================
 

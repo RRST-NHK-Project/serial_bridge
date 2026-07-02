@@ -11,12 +11,22 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 ====================================================================*/
 
 #include "config.hpp"
-#include "old_defs.hpp"
 #include "pid_task.hpp"
 #include "pin_ctrl_task.hpp"
 #include "robomas.hpp"
 #include "serial_task.hpp"
 #include <Arduino.h>
+
+#if defined(OLD_BOARD)
+#include "old_defs.hpp"
+#elif defined(NEW_BOARD)
+#include "new_defs.hpp"
+#endif
+
+#if (defined(OLD_BOARD) + defined(NEW_BOARD)) != 1
+#error "Invalid board definition. Please define *one board* in config.hpp."
+#endif
+
 // ================= SETUP =================
 
 void setup() {
