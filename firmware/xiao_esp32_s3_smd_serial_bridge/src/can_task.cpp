@@ -11,6 +11,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "config.hpp"
 #include "defs.hpp"
 #include "frame_data.hpp"
+#include "status_led.hpp"
 #include <Arduino.h>
 #include <cstring>
 #include <driver/twai.h>
@@ -26,7 +27,6 @@ static twai_timing_config_t t_config = TWAI_TIMING_CONFIG_500KBITS();
 static twai_filter_config_t f_config = TWAI_FILTER_CONFIG_ACCEPT_ALL();
 static portMUX_TYPE g_can_frame_lock = portMUX_INITIALIZER_UNLOCKED;
 
-static uint32_t g_last_can_led_ms = 0;
 static int16_t g_monitor_node_slots[CAN_NODE_COUNT * CAN_SLOTS_PER_NODE] = {0};
 static uint8_t g_monitor_node_chunk_mask[CAN_NODE_COUNT] = {0};
 
@@ -84,25 +84,6 @@ static void updateCanMonitorNodeFromFrame(const twai_message_t &message) {
     g_monitor_node_chunk_mask[frame_node] |= (uint8_t)(1u << chunk);
     if (g_monitor_node_chunk_mask[frame_node] == ((1u << CAN_CHUNK_COUNT_PER_NODE) - 1u)) {
         printCanMonitorNodeSummary(frame_node, g_monitor_node_slots);
-    }
-}
-
-static void triggerCanLedActivity() {
-    if (!ENABLE_LED) {
-        return;
-    }
-
-    digitalWrite(LED, HIGH);
-    g_last_can_led_ms = millis();
-}
-
-static void updateCanLedState() {
-    if (!ENABLE_LED) {
-        return;
-    }
-
-    if (millis() - g_last_can_led_ms >= 100U) {
-        digitalWrite(LED, LOW);
     }
 }
 
@@ -165,6 +146,8 @@ static void canRecvNodeSlotBlock(int16_t *buffer, uint8_t node_index) {
             continue;
         }
 
+        statusLedPulse();
+
         const uint8_t slot_offset = node_index * CAN_SLOTS_PER_NODE + chunk * CAN_VALUES_PER_FRAME;
         const uint8_t values_to_unpack = canChunkValueCount(chunk);
         for (uint8_t i = 0; i < values_to_unpack; i++) {
@@ -199,6 +182,8 @@ static void canRecvAllNodeSlotBlocks(int16_t *buffer) {
         if (chunk >= CAN_CHUNK_COUNT_PER_NODE) {
             continue;
         }
+
+        statusLedPulse();
 
         const uint8_t slot_offset = frame_node * CAN_SLOTS_PER_NODE + chunk * CAN_VALUES_PER_FRAME;
         const uint8_t values_to_unpack = canChunkValueCount(chunk);
@@ -270,6 +255,7 @@ void canTask(void *) {
 #if defined(MODE_CAN_MONITOR)
         twai_message_t message{};
         if (twai_receive(&message, pdMS_TO_TICKS(5)) == ESP_OK) {
+            statusLedPulse();
             const uint32_t now_ms = millis();
             if (now_ms - last_monitor_print_ms >= 50U) {
                 updateCanMonitorNodeFromFrame(message);
@@ -309,7 +295,7 @@ void canTask(void *) {
         }
 #endif
 
-        updateCanLedState();
+        statusLedUpdate();
         vTaskDelay(pdMS_TO_TICKS(1));
     }
 }

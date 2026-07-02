@@ -41,6 +41,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "config.hpp"
 #include "defs.hpp"
 #include "frame_data.hpp"
+#include "status_led.hpp"
 #include <Arduino.h>
 #include <cstring>
 
@@ -105,6 +106,10 @@ void serialTask(void *) {
             send_frame();
             last_tx = xTaskGetTickCount();
         }
+
+        // MODE_IOではcanTaskが存在しないため、ここでLEDの消灯判定を行う
+        // （CANモードではcanTask側でも呼ばれるが、冪等なので問題ない）
+        statusLedUpdate();
 
         vTaskDelay(pdMS_TO_TICKS(1));
     }
@@ -212,10 +217,7 @@ void receive_frame() {
         case WAIT_CHECKSUM:
             if (rx_checksum == b && rx_id == DEVICE_ID) { // データが破損していないこと，IDが自機と一致することを確認
 
-                if (ENABLE_LED) {
-                    // ホスト側ではシリアル受信時にLEDを点灯させる
-                    digitalWrite(LED, HIGH);
-                }
+                statusLedPulse(); // シリアル受信時にLEDをパルス点灯させる
 
                 // ===== 生フレームの保存（受信したデータをフレーム形式に復元） =====
                 Rx_raw_frame[0] = START_BYTE;
