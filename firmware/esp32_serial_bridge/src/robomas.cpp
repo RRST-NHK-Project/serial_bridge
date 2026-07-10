@@ -60,9 +60,9 @@ float kp_pos = 0.8f;  // 角度比例ゲイン
 float ki_pos = 0.01f; // 角度積分ゲイン
 float kd_pos = 0.02f; // 角度微分ゲイン
 
-float kp_pos_gm6020 = 0.02;
-float ki_pos_gm6020 = 0.0;
-float kd_pos_gm6020 = 0.0; // 微分は控えめに
+float kp_pos_gm6020 = 0.03;
+float ki_pos_gm6020 = 0.0; // 目標付近での収束を早めるため追加（要チューニング）
+float kd_pos_gm6020 = 0.00; // 微分は控えめに
 
 
 // -------- 速度PIDゲイン -------- //
@@ -139,7 +139,7 @@ void send_cur_c610(float cur_array[NUM_MOTOR])
 void send_cur_gm6020(float cur_array[NUM_MOTOR])
 {
     twai_message_t tx;       // 送信用メッセージ
-    tx.identifier = 0x1FF;   // CAN ID
+    tx.identifier = 0x1FE;   // CAN ID
     tx.extd = 0;             // 標準フレーム
     tx.rtr = 0;              // データフレーム
     tx.data_length_code = 8; // 8バイト
@@ -317,7 +317,7 @@ void gm6020_Task(void *pvParameters)
         for (int i = 0; i < NUM_MOTOR; i++)
         {
            c_gm6020[i] = pid(target_angle[i], angle_gm6020[i], pos_error_prev[i], pos_integral[i], kp_pos_gm6020, ki_pos_gm6020, kd_pos_gm6020, dt);
-           motor_output_current[i] = constrain_double(c_gm6020[i], -3, 3);
+           motor_output_current[i] = constrain_double(c_gm6020[i], -10, 10);
         }
 
         // 送信
