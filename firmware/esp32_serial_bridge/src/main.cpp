@@ -89,6 +89,17 @@ void setup() {
         11, // 優先度
         NULL);
 
+    #if defined(ESP32)   
+    xTaskCreate(
+        PID_Task,   // タスク関数
+        "PID_Task", // タスク名
+        2048,       // スタックサイズ（words）
+        NULL,
+        11, // 優先度
+        NULL);
+
+    #endif
+
 #elif defined(MODE_ROBOMAS)
     // ロボマスモード初期化
 

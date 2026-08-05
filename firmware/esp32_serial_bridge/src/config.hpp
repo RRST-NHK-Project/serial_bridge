@@ -11,13 +11,13 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // ================= 基本設定 =================
 
 // IDの設定，ROS側からマイコンを識別するために使用，すべてのマイコンで異なる値にすること
-#define DEVICE_ID 0x03
+#define DEVICE_ID 0x01
 
 // モードの設定，どれか一つをコメントアウト解除する
-#define MODE_OUTPUT
+//#define MODE_OUTPUT
 //#define MODE_INPUT
 //#define MODE_IO
-//#define MODE_OMNI_IO
+#define MODE_OMNI_IO
 //#define MODE_ROBOMAS
 // #define MODE_ROBOMAS_PLUS_OUTPUT
 // #define MODE_ROBOMAS_PLUS_INPUT
@@ -27,8 +27,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // ================= 基板設定 =================
 
 // 使用する基板の設定，どちらか一つをコメントアウト解除する
-#define BOARD_V4_0 //元々使ってた基板
-//#define BOARD_V6_0 //夏ロボからの新しい基板
+//#define BOARD_V4_0 //元々使ってた基板
+#define BOARD_V6_0 //夏ロボからの新しい基板
 
 #if defined(BOARD_V4_0)
 #include "v4.0_defs.hpp"
@@ -36,8 +36,19 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "v6.0_defs.hpp"
 #endif
 
+// ================= PID設定 =================
+
+// PIDを行う場所の設定
+#define PC //PC側でPID
+// #define ESP32 //マイコン側でPID
+
+
 #if (defined(BOARD_V4_0) + defined(BOARD_V6_0)) != 1
 #error "Invalid board definition. Please define *one board* in config.hpp."
+#endif
+
+#if (defined(PC) + defined(ESP32)) != 1
+#error "Invalid PID definition. Please define *one PID location* in config.hpp."
 #endif
 
 // ================= MD関連 =================
