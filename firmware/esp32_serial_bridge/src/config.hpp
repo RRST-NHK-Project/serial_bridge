@@ -38,8 +38,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 // ================= PID設定 =================
 
-// PIDを行う場所の設定
-#define PC //PC側でPID
+// PIDを行う場所の設定(ROS側でも同じ方をコメントアウトすること。)
+#define PC //PC側でPID（あるいはしない）
 // #define ESP32 //マイコン側でPID
 
 
