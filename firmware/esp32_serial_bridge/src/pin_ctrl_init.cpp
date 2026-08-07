@@ -90,10 +90,10 @@ void IO_init() {
     ENCx2_init();
 
     // SW ピン初期化
-    pinMode(SW3, INPUT_PULLUP);
+    /*pinMode(SW3, INPUT_PULLUP);
     pinMode(SW4, INPUT_PULLUP);
     pinMode(SW7, INPUT_PULLUP);
-    pinMode(SW8, INPUT_PULLUP);
+    pinMode(SW8, INPUT_PULLUP);*/
 
     // トランジスタのピンを出力に設定
     pinMode(TR1, OUTPUT);
@@ -483,7 +483,7 @@ void ENCx2_init() {
 
     pcnt_counter_resume(PCNT_UNIT_0);
     pcnt_counter_resume(PCNT_UNIT_1);
-
+id IO_SW_Input() {
     // チャタリング防止のフィルターを有効化
     pcnt_filter_enable(PCNT_UNIT_0);
     pcnt_filter_enable(PCNT_UNIT_1);

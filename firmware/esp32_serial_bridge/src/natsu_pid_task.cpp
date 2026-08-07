@@ -98,14 +98,14 @@ void pid_vel_control() {
     last_angle[3] = angle[3];
 
     // オーバーフロー対策が甘いがとりあえずそのまま送る
-    Tx_16Data[1] = static_cast<int16_t>(angle[0]);
-    Tx_16Data[2] = static_cast<int16_t>(angle[1]);
-    Tx_16Data[3] = static_cast<int16_t>(angle[2]);
-    Tx_16Data[4] = static_cast<int16_t>(angle[3]);
-    Tx_16Data[9] = static_cast<int16_t>(vel[0]);
-    Tx_16Data[10] = static_cast<int16_t>(vel[1]);
-    Tx_16Data[11] = static_cast<int16_t>(vel[2]);
-    Tx_16Data[12] = static_cast<int16_t>(vel[3]);
+    // Tx_16Data[1] = static_cast<int16_t>(angle[0]);
+    // Tx_16Data[2] = static_cast<int16_t>(angle[1]);
+    // Tx_16Data[3] = static_cast<int16_t>(angle[2]);
+    // Tx_16Data[4] = static_cast<int16_t>(angle[3]);
+    // Tx_16Data[9] = static_cast<int16_t>(vel[0]);
+    // Tx_16Data[10] = static_cast<int16_t>(vel[1]);
+    // Tx_16Data[11] = static_cast<int16_t>(vel[2]);
+    // Tx_16Data[12] = static_cast<int16_t>(vel[3]);
 
     output[0] = pid_calculate(target_v[0], vel[0], vel_last_error[0], vel_integral[0], Kp, Ki, Kd, dt);
 

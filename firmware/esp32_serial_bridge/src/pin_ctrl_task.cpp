@@ -21,7 +21,7 @@ void SW_Input();
 void IO_MD_Output();
 void IO_TR_Output();
 void IO_ENC_Input();
-void IO_SW_Input();
+// void IO_SW_Input();
 void ROBOMAS_IO_ENC_Input();
 void ROBOMAS_IO_SW_Input();
 void OMNI_IO_init();
@@ -66,7 +66,7 @@ void IO_Task(void *) {
         IO_MD_Output();
         IO_TR_Output();
         IO_ENC_Input();
-        IO_SW_Input();
+        // IO_SW_Input();
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
@@ -255,10 +255,10 @@ void ROBOMAS_IO_SW_Input() {
 //     // taskEXIT_CRITICAL();
 // }
 
-void IO_SW_Input() {
+/*void IO_SW_Input() {
     // SW入力処理
     Tx_16Data[11] = !digitalRead(SW3);
     Tx_16Data[12] = !digitalRead(SW4);
     Tx_16Data[15] = !digitalRead(SW7);
     Tx_16Data[16] = !digitalRead(SW8);
-}
+}*/
