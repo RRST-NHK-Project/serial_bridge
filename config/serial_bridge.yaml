@@ -3,7 +3,7 @@ serial_bridge_status:
     # スキャン対象から除外するポートのリスト
     # センサのシリアル変換モジュール等、マイコン通信と干渉するポートを指定する
     # 例: excluded_ports: ["/dev/ttyUSB0", "/dev/ttyACM1"]
-    excluded_ports: ["/dev/ttyUSB0"]
+    excluded_ports: ["/dev/ttyUSB0"] #, "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3"] # ぶっ刺してるセンサーの数におうじて増やしてください
 
     # RX タイムアウト（秒）: この時間内にデータを受信しなければポートを閉じる
     rx_timeout_sec: 2.0
