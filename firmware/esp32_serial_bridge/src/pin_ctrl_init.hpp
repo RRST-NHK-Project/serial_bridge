@@ -19,3 +19,4 @@ void ROBOMAS_IO_init();
 void ENCx4_init();
 void IO_init();
 void OMNI_IO_init();
+void Natsu_ID2_init();
