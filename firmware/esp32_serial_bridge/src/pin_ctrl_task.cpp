@@ -26,7 +26,9 @@ void ROBOMAS_IO_ENC_Input();
 void ROBOMAS_IO_SW_Input();
 void OMNI_IO_init();
 void OMNI_IO_TR_Output();
-void Natsu_ID2_init();
+void NATSU_ID2_init();
+void NATSU_ID2_ENC_Input();
+void NATSU_ID2_TR_Output();
 
 
 // ================= TASK =================
@@ -92,6 +94,18 @@ void ROBOMAS_IO_Task(void *) {
         IO_TR_Output();
         ROBOMAS_IO_ENC_Input();
         ROBOMAS_IO_SW_Input();
+        vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
+    }
+}
+
+void NATSU_ID2_Task(){
+    TickType_t last_wake = xTaskGetTickCount();
+    NATSU_ID2_init();
+
+    while (1) {
+        MD_Output();
+        NATSU_ID2_ENC_Input();
+        NATSU_ID2_TR_Output();
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
@@ -235,6 +249,22 @@ void ROBOMAS_IO_SW_Input() {
     Tx_16Data[10] = !digitalRead(SW2);
     }
 
+void NATSU_ID2_TR_Output() {
+    digitalWrite(TR1, Rx_16Data[17] ? HIGH : LOW);
+    digitalWrite(TR2, Rx_16Data[18] ? HIGH : LOW);
+    digitalWrite(TR3, Rx_16Data[19] ? HIGH : LOW);
+    if (ENABLE_EXTRA_TR_PIN) {
+        digitalWrite(TR6, Rx_16Data[22] ? HIGH : LOW);
+        digitalWrite(TR7, Rx_16Data[23] ? HIGH : LOW);
+    }
+}
+
+void NATSU_ID2_ENC_Input() {
+    pcnt_get_counter_value(PCNT_UNIT_0, (int16_t *)&Tx_16Data[1]);
+    pcnt_get_counter_value(PCNT_UNIT_1, (int16_t *)&Tx_16Data[2]);
+    pcnt_get_counter_value(PCNT_UNIT_3, (int16_t *)&Tx_16Data[4]);
+}
+
 // void IO_ENC_Input() {
 //     // ENC入力処理
 //     // taskENTER_CRITICAL();
@@ -263,3 +293,5 @@ void IO_SW_Input() {
     Tx_16Data[15] = !digitalRead(SW7);
     Tx_16Data[16] = !digitalRead(SW8);
 }
+
+

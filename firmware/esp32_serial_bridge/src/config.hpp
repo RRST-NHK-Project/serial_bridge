@@ -23,6 +23,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // #define MODE_ROBOMAS_PLUS_INPUT
 //#define MODE_ROBOMAS_PLUS_IO
 // #define MODE_DEBUG
+// #define MODE_NATSU_ID2
 // ================= 基板設定 =================
 
 // 使用する基板の設定，どちらか一つをコメントアウト解除する

@@ -22,6 +22,7 @@ void ROBOMAS_IO_init();
 void ENCx4_init();
 void IO_init();
 void OMNI_IO_init();
+void NATSU_ID2_init();
 
 void Input_init() {
     // エンコーダとスイッチの初期化
@@ -633,7 +634,9 @@ void ENCx4_init() {
     pcnt_set_filter_value(PCNT_UNIT_3, PCNT_FILTER_VALUE);
 }
 
-void  Natsu_ID2_init(){
+//夏ロボ　ID2用モード
+void  NATSU_ID2_init(){
+    // MDの方向ピンを出力に設定
     pinMode(MD1D, OUTPUT);
     pinMode(MD2D, OUTPUT);
     pinMode(MD3D, OUTPUT);
