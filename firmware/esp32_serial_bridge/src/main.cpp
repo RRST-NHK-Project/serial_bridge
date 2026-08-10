@@ -100,6 +100,17 @@ void setup() {
 
     //#endif
 
+#elif defined(MODE_NATSU_ID2)
+    // 夏ロボ　ID2用モード初期化
+
+    xTaskCreate(
+        NATSU_ID2_Task,   // タスク関数
+        "NATSU_ID2_Task", // タスク名
+        2048,             // スタックサイズ（words）
+        NULL,
+        11, // 優先度
+        NULL);
+
 #elif defined(MODE_ROBOMAS)
     // ロボマスモード初期化
 
@@ -128,6 +139,7 @@ void setup() {
         NULL,
         9, // 優先度
         NULL);
+        
 #elif defined(MODE_ROBOMAS_PLUS_OUTPUT)
     // ロボマスモード初期化
 
@@ -234,16 +246,6 @@ void setup() {
         11, // 優先度
         NULL);
 
-#elif defined(MODE_NATSU_ID2)
-    // 夏ロボ　ID2用モード初期化
-
-    xTaskCreate(
-        NATSU_ID2_Task,   // タスク関数
-        "NATSU_ID2_Task", // タスク名
-        2048,             // スタックサイズ（words）
-        NULL,
-        11, // 優先度
-        NULL);
 
 #else
 #error "No mode defined. Please define one mode in config.hpp."
