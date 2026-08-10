@@ -50,8 +50,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define TR3 27
 #define TR4 32
 #define TR5 33
-#define TR6 22
-#define TR7 23
+#define TR6 23
+#define TR7 22
 
 // エンコーダ
 #define ENC1_A 33

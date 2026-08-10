@@ -107,6 +107,7 @@ void IO_init() {
         pinMode(TR7, OUTPUT);
     }
 }
+
 void OMNI_IO_init(){
     // MDの方向ピンを出力に設定
     pinMode(MD1D, OUTPUT);

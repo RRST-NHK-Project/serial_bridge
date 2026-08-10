@@ -23,4 +23,10 @@ void IO_MD_Output();
 void IO_TR_Output();
 void IO_ENC_Input();
 void IO_SW_Input();
-void OMNI_IO_TR_Output();//一応ピンが干渉していないTRを使えるようにしておく
+void ROBOMAS_IO_ENC_Input();
+void ROBOMAS_IO_SW_Input();
+void OMNI_IO_init();
+void OMNI_IO_TR_Output(); //一応ピンが干渉していないTRを使えるようにしておく
+void NATSU_ID2_init();
+void NATSU_ID2_ENC_Input();
+void NATSU_ID2_TR_Output();

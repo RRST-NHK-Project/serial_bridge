@@ -10,7 +10,6 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 
 // 関数のプロトタイプ宣言
 void Output_init();
-void TR_Output();
 void Input_init();
 void ENCx4_SWx4_init();
 void ENCx2_SWx8_init();
