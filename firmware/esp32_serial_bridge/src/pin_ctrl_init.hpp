@@ -9,13 +9,13 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include <Arduino.h>
 
 // 関数のプロトタイプ宣言
-void Output_init();
 void Input_init();
+void Output_init();
+void IO_init();
+void OMNI_IO_init();
+void ROBOMAS_IO_init();
+void NATSU_ID2_init();
 void ENCx4_SWx4_init();
 void ENCx2_SWx8_init();
 void ENCx2_init();
-void ROBOMAS_IO_init();
 void ENCx4_init();
-void IO_init();
-void OMNI_IO_init();
-void NATSU_ID2_init();

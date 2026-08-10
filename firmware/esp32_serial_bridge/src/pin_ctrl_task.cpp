@@ -24,9 +24,7 @@ void IO_ENC_Input();
 void IO_SW_Input();
 void ROBOMAS_IO_ENC_Input();
 void ROBOMAS_IO_SW_Input();
-void OMNI_IO_init();
 void OMNI_IO_TR_Output();
-void NATSU_ID2_init();
 void NATSU_ID2_ENC_Input();
 void NATSU_ID2_TR_Output();
 
@@ -73,6 +71,7 @@ void IO_Task(void *) {
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
+
 void Omni_IO_Task(void *) {
     TickType_t last_wake = xTaskGetTickCount();
     OMNI_IO_init();
@@ -98,7 +97,7 @@ void ROBOMAS_IO_Task(void *) {
     }
 }
 
-void NATSU_ID2_Task(){
+void NATSU_ID2_Task(void *) {
     TickType_t last_wake = xTaskGetTickCount();
     NATSU_ID2_init();
 
@@ -196,6 +195,7 @@ void TR_Output() {
         digitalWrite(TR7, Rx_16Data[23] ? HIGH : LOW);
     }
 }
+
 void OMNI_IO_TR_Output() {
     digitalWrite(TR1, Rx_16Data[17] ? HIGH : LOW);
     /*digitalWrite(TR2, Rx_16Data[18] ? HIGH : LOW);
