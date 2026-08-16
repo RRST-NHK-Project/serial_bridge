@@ -72,8 +72,11 @@ SerialBridgeNode::SerialBridgeNode(uint8_t device_id, const std::string &port,
                 static_cast<long>(status_log_period_.count()));
 
     // ---------- ROS Pub/Sub ----------
+    // エンコーダFB等の高頻度ストリーム。Best-Effort(SensorDataQoS)にして、
+    // 購読者が遅い/SHMが詰まっても publish がブロックせず、read(受信)を飢餓させない。
+    // ※消費側(omni_drive等)も同じBest-Effortにしないと接続しない点に注意。
     rx_pub_ = this->create_publisher<std_msgs::msg::Int16MultiArray>(
-        "serial_rx_" + std::to_string(device_id_), 10);
+        "serial_rx_" + std::to_string(device_id_), rclcpp::SensorDataQoS());
 
     tx_sub_ = this->create_subscription<std_msgs::msg::Int16MultiArray>(
         "serial_tx_" + std::to_string(device_id_), 10,
