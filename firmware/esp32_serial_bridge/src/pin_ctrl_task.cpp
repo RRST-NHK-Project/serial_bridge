@@ -8,10 +8,12 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "frame_data.hpp"
 #include "pin_ctrl_init.hpp"
 #include <Arduino.h>
+#include <Adafruit_NeoPixel.h>
 
 #include "config.hpp"
 
 constexpr uint32_t CTRL_PERIOD_MS = 5; // ピン更新周期（ミリ秒）
+static Adafruit_NeoPixel g_px(1, WS2812_PIN, NEO_GRB + NEO_KHZ800);
 
 void MD_Output();
 void Servo_Output();
@@ -27,6 +29,7 @@ void ROBOMAS_IO_SW_Input();
 void OMNI_IO_TR_Output();
 void NATSU_ID2_ENC_Input();
 void NATSU_ID2_TR_Output();
+void LED_init_() { g_px.begin(); g_px.show(); }
 
 
 // ================= TASK =================
@@ -75,11 +78,13 @@ void IO_Task(void *) {
 void Omni_IO_Task(void *) {
     TickType_t last_wake = xTaskGetTickCount();
     OMNI_IO_init();
+    LED_init_();
 
     while (1) {
         MD_Output();
         OMNI_IO_TR_Output();
         ENC_Input();
+        LED_Output();
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
@@ -129,6 +134,17 @@ void SW_Input() {
     Tx_16Data[14] = !digitalRead(SW6);
     Tx_16Data[15] = !digitalRead(SW7);
     Tx_16Data[16] = !digitalRead(SW8);
+}
+
+void LED_Output() {
+    // LED出力処理
+    unit16_t c = (unit16_t)Rx_16Data[9]; //色コード取得
+    // 5bit+6bit+5bitのRGB565を8bit+8bit+8bitに変換出力
+    uint8_t r = (c >> 8) & 0xF8; r |= (r >> 5); // 5bit→8bit
+    uint8_t g = (c >> 3) & 0xFC; g |= (g >> 6); // 6bit→8bit
+    uint8_t b = (c << 3) & 0xF8; b |= (b >> 5); // 5bit→8bit
+    g_px.setPixelColor(0, r, g, b);
+    g_px.show();
 }
 
 // ================= 関数 =================
