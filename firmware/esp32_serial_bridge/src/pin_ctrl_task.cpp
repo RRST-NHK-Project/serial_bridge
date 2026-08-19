@@ -13,7 +13,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "config.hpp"
 
 constexpr uint32_t CTRL_PERIOD_MS = 5; // ピン更新周期（ミリ秒）
-static Adafruit_NeoPixel g_px(1, WS2812_PIN, NEO_GRB + NEO_KHZ800);
+static Adafruit_NeoPixel g_px(1, LED, NEO_GRB + NEO_KHZ800);
 
 void MD_Output();
 void Servo_Output();
@@ -29,6 +29,7 @@ void ROBOMAS_IO_SW_Input();
 void OMNI_IO_TR_Output();
 void NATSU_ID2_ENC_Input();
 void NATSU_ID2_TR_Output();
+void LED_Output();
 void LED_init_() { g_px.begin(); g_px.show(); }
 
 
@@ -138,7 +139,7 @@ void SW_Input() {
 
 void LED_Output() {
     // LED出力処理
-    unit16_t c = (unit16_t)Rx_16Data[9]; //色コード取得
+    uint16_t c = (uint16_t)Rx_16Data[9]; //色コード取得
     // 5bit+6bit+5bitのRGB565を8bit+8bit+8bitに変換出力
     uint8_t r = (c >> 8) & 0xF8; r |= (r >> 5); // 5bit→8bit
     uint8_t g = (c >> 3) & 0xFC; g |= (g >> 6); // 6bit→8bit
