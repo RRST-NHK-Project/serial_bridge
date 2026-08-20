@@ -174,7 +174,7 @@ Subscribe to this topic from any ROS 2 node to receive and use sensor feedback.
 
 | Parameter | Default | Description |
 |:---|:---|:---|
-| `excluded_ports` | `["/dev/ttyUSB0"]` | Ports excluded from scanning (e.g. LiDAR, GPS) |
+| `excluded_ports` | `[]` | Ports excluded from scanning (e.g. LiDAR, GPS) |
 | `rx_timeout_sec` | `2.0` | Seconds without RX before closing the port |
 | `reconnect_interval_sec` | `3.0` | Minimum wait between reconnect attempts |
 | `scan_interval_ms` | `5000` | Interval between port scan cycles (ms) |

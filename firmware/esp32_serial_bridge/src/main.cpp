@@ -247,12 +247,23 @@ void setup() {
         11, // 優先度
         NULL);
 
+#elif defined(MODE_NATSU_ID4)
+    // 夏ロボ ID4専用モード初期化
+    // 出力のみ: MD1(data[1]=マブチモータ) + WS2812Bテープ(data[9]=状態表示色)
+
+    xTaskCreate(
+        NATSU_ID4_Task,   // タスク関数
+        "NATSU_ID4_Task", // タスク名
+        2048,             // スタックサイズ（words）
+        NULL,
+        11, // 優先度
+        NULL);
 
 #else
 #error "No mode defined. Please define one mode in config.hpp."
 #endif
 
-#if (defined(MODE_OUTPUT) + defined(MODE_INPUT) + defined(MODE_IO) + defined(MODE_OMNI_IO) + defined(MODE_NATSU_ID2) + \
+#if (defined(MODE_OUTPUT) + defined(MODE_INPUT) + defined(MODE_IO) + defined(MODE_OMNI_IO) + defined(MODE_NATSU_ID2) + defined(MODE_NATSU_ID4) + \
      defined(MODE_ROBOMAS) + defined(MODE_ROBOMAS_PLUS_OUTPUT) + defined(MODE_ROBOMAS_PLUS_INPUT) + defined(MODE_ROBOMAS_PLUS_IO) + defined(MODE_DEBUG)) != 1
 #error "Invalid mode configuration. Please define exactly *one mode* in config.hpp."
 #endif

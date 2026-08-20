@@ -17,13 +17,14 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 //#define MODE_OUTPUT
 //#define MODE_INPUT
 //#define MODE_IO
-#define MODE_OMNI_IO
+//#define MODE_OMNI_IO
 //#define MODE_ROBOMAS
 // #define MODE_ROBOMAS_PLUS_OUTPUT
 // #define MODE_ROBOMAS_PLUS_INPUT
 //#define MODE_ROBOMAS_PLUS_IO
 // #define MODE_DEBUG
 // #define MODE_NATSU_ID2
+#define MODE_NATSU_ID4 // 夏ロボ ID4専用: MD1(マブチモータ) + WS2812Bテープ(状態表示)
 
 // ================= 基板設定 =================
 
@@ -94,3 +95,9 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // 以下の設定は必要に応じて変更
 #define ENABLE_LED 1          // 状態表示LEDを有効にする場合1に設定
 #define ENABLE_EXTRA_TR_PIN 0 // TR6,TR7を有効にする場合1に設定、サーボとのピン競合に注意
+
+// ================= 状態表示LEDテープ (WS2812B) =================
+// MODE_NATSU_ID4 で使用。Rx_16Data[9] の RGB565 色を全粒同色で出す。
+// データ線を繋いだGPIOと、テープの粒数に合わせて変更すること。
+#define LED_STRIP_PIN SERVO1 // データ線のGPIO。SERVO1=GPIO19(空きサーボピン流用)。他の空きピンでも可
+#define LED_STRIP_NUM 30     // ★テープの実際の粒数に合わせて変更する

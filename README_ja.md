@@ -170,7 +170,7 @@ ROS 2 (serial_bridge)                      マイコン
 
 | パラメータ | デフォルト | 説明 |
 |:---|:---|:---|
-| `excluded_ports` | `["/dev/ttyUSB0"]` | スキャン対象から除外するポート（例: LiDAR、GPS） |
+| `excluded_ports` | `[]` | スキャン対象から除外するポート（例: LiDAR、GPS） |
 | `rx_timeout_sec` | `2.0` | この秒数 RX がなければポートを閉じる |
 | `reconnect_interval_sec` | `3.0` | 切断後の再接続までの最小待機時間（秒） |
 | `scan_interval_ms` | `5000` | ポートスキャンの間隔（ミリ秒） |

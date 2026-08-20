@@ -13,7 +13,8 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "config.hpp"
 
 constexpr uint32_t CTRL_PERIOD_MS = 5; // ピン更新周期（ミリ秒）
-static Adafruit_NeoPixel g_px(1, LED, NEO_GRB + NEO_KHZ800);
+// 状態表示LEDテープ。粒数とデータピンは config.hpp で設定。
+static Adafruit_NeoPixel g_px(LED_STRIP_NUM, LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);
 
 void MD_Output();
 void Servo_Output();
@@ -115,6 +116,22 @@ void NATSU_ID2_Task(void *) {
     }
 }
 
+void NATSU_ID4_Task(void *) {
+    // 夏ロボ ID4専用: 出力のみ。
+    //   Rx_16Data[1] = マブチモータ -> MD1
+    //   Rx_16Data[9] = 状態表示色(RGB565) -> WS2812Bテープ
+    // エンコーダ/サーボ/TRは持たない。
+    TickType_t last_wake = xTaskGetTickCount();
+    NATSU_ID4_init();
+    LED_init_();
+
+    while (1) {
+        MD_Output();  // data[1]->MD1 (data[2~4]は0のままなので他MDは停止)
+        LED_Output(); // data[9]->WS2812Bテープ
+        vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
+    }
+}
+
 void ENC_Input() {
     // ENC入力処理
     // taskENTER_CRITICAL();
@@ -138,13 +155,21 @@ void SW_Input() {
 }
 
 void LED_Output() {
-    // LED出力処理
+    // LED出力処理。Rx_16Data[9] の RGB565 をテープ全粒に同色で出す。
+    // 色が変わった時だけ show()(WS2812Bは割り込み禁止で送るため毎周期は無駄)。
+    static uint16_t last = 0;
+    static bool first = true;
     uint16_t c = (uint16_t)Rx_16Data[9]; //色コード取得
+    if (!first && c == last) {
+        return;
+    }
+    first = false;
+    last = c;
     // 5bit+6bit+5bitのRGB565を8bit+8bit+8bitに変換出力
     uint8_t r = (c >> 8) & 0xF8; r |= (r >> 5); // 5bit→8bit
     uint8_t g = (c >> 3) & 0xFC; g |= (g >> 6); // 6bit→8bit
     uint8_t b = (c << 3) & 0xF8; b |= (b >> 5); // 5bit→8bit
-    g_px.setPixelColor(0, r, g, b);
+    g_px.fill(g_px.Color(r, g, b)); // 全粒同色
     g_px.show();
 }
 

@@ -3,7 +3,9 @@ serial_bridge_status:
     # スキャン対象から除外するポートのリスト
     # センサのシリアル変換モジュール等、マイコン通信と干渉するポートを指定する
     # 例: excluded_ports: ["/dev/ttyUSB0", "/dev/ttyACM1"]
-    excluded_ports: ["/dev/ttyUSB0"] #, "/dev/ttyUSB1", "/dev/ttyUSB2", "/dev/ttyUSB3"] # ぶっ刺してるセンサーの数におうじて増やしてください
+    # LiDAR を載せなくなったので /dev/ttyUSB0 の除外を解除(2026-08-20)
+    # 干渉するセンサを挿したら実体パス(/dev/ttyUSB*)をここに追加する
+    excluded_ports: []
 
     # RX タイムアウト（秒）: この時間内にデータを受信しなければポートを閉じる
     rx_timeout_sec: 2.0

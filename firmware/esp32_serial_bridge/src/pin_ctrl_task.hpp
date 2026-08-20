@@ -15,6 +15,7 @@ void IO_Task(void *);         // 入出力タスク
 void ROBOMAS_IO_Task(void *); // ロボマス入出力タスク
 void Omni_IO_Task(void *);    // 4輪オムニ用入出力タスク
 void NATSU_ID2_Task(void *);  // 夏ロボID2用入出力タスク
+void NATSU_ID4_Task(void *);  // 夏ロボID4専用タスク(MD1 + WS2812Bテープ)
 void MD_Output();
 void Servo_Output();
 void TR_Output();

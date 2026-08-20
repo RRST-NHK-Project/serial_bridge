@@ -19,6 +19,7 @@ void IO_init();
 void OMNI_IO_init();
 void ROBOMAS_IO_init();
 void NATSU_ID2_init();
+void NATSU_ID4_init();
 void ENCx4_SWx4_init();
 void ENCx2_SWx8_init();
 void ENCx2_init();
@@ -307,6 +308,28 @@ void  NATSU_ID2_init(){
     pcnt_set_filter_value(PCNT_UNIT_1, PCNT_FILTER_VALUE);
     pcnt_set_filter_value(PCNT_UNIT_3, PCNT_FILTER_VALUE);
 
+}
+
+// 夏ロボ ID4専用モード
+// 出力のみ: MD1(data[1]=マブチモータ)。WS2812Bテープ(data[9])はタスク側のLED_init_()で初期化。
+// エンコーダ/サーボ/TR/SWは使わないので初期化しない(LED_STRIP_PIN と競合させない)。
+void NATSU_ID4_init() {
+    // MDの方向ピンを出力に設定(念のためMD1~4すべて)
+    pinMode(MD1D, OUTPUT);
+    pinMode(MD2D, OUTPUT);
+    pinMode(MD3D, OUTPUT);
+    pinMode(MD4D, OUTPUT);
+
+    // PWMの初期化(MD_Output が ledc ch0~3 を使う)
+    ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+    ledcSetup(1, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+    ledcSetup(2, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+    ledcSetup(3, MD_PWM_FREQ, MD_PWM_RESOLUTION);
+
+    ledcAttachPin(MD1P, 0);
+    ledcAttachPin(MD2P, 1);
+    ledcAttachPin(MD3P, 2);
+    ledcAttachPin(MD4P, 3);
 }
 
 // エンコーダ4つ分の初期化
