@@ -13,8 +13,22 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #include "config.hpp"
 
 constexpr uint32_t CTRL_PERIOD_MS = 5; // ピン更新周期（ミリ秒）
-// 状態表示LEDテープ。粒数とデータピンは config.hpp で設定。
-static Adafruit_NeoPixel g_px(LED_STRIP_NUM, LED_STRIP_PIN, NEO_GRB + NEO_KHZ800);
+
+// 状態表示LEDテープ。本数・粒数・データピンは config.hpp で設定。
+// 空の(デフォルト)コンストラクタで作って LED_init_() で中身を設定する。
+// 配列の初期化子で作るとコピーが走り、テープの内部バッファを二重解放する恐れがあるため。
+static Adafruit_NeoPixel g_px[LED_STRIP_COUNT];
+
+// テープi番のデータピン。Rx_16Data[9 + i] の色をここへ出す。
+static const uint8_t kLedStripPins[LED_STRIP_COUNT] = {
+    LED_STRIP1_PIN,
+    LED_STRIP2_PIN,
+    LED_STRIP3_PIN,
+    LED_STRIP4_PIN,
+};
+
+// LEDの色が入っている Rx_16Data の先頭スロット。ROS側 charge.cpp の LED_SLOT と同じ値。
+constexpr int LED_SLOT = 9;
 
 void MD_Output();
 void Servo_Output();
@@ -31,7 +45,17 @@ void OMNI_IO_TR_Output();
 void NATSU_ID2_ENC_Input();
 void NATSU_ID2_TR_Output();
 void LED_Output();
-void LED_init_() { g_px.begin(); g_px.show(); }
+
+void LED_init_() {
+    for (int i = 0; i < LED_STRIP_COUNT; i++) {
+        // 空コンストラクタで作ったので、型 -> 粒数 -> ピン の順に設定してから begin()。
+        g_px[i].updateType(NEO_GRB + NEO_KHZ800);
+        g_px[i].updateLength(LED_STRIP_NUM);
+        g_px[i].setPin(kLedStripPins[i]);
+        g_px[i].begin();
+        g_px[i].show(); // 起動時は全消灯
+    }
+}
 
 
 // ================= TASK =================
@@ -118,16 +142,17 @@ void NATSU_ID2_Task(void *) {
 
 void NATSU_ID4_Task(void *) {
     // 夏ロボ ID4専用: 出力のみ。
-    //   Rx_16Data[1] = マブチモータ -> MD1
-    //   Rx_16Data[9] = 状態表示色(RGB565) -> WS2812Bテープ
-    // エンコーダ/サーボ/TRは持たない。
+    //   Rx_16Data[1]      = マブチモータ -> MD1
+    //   Rx_16Data[9]〜[12] = 状態表示色(RGB565) -> WS2812Bテープ4本
+    // エンコーダ/サーボ/TRは持たない。サーボピン(SERVO1〜4)はLEDのデータ線に流用しており、
+    // NATSU_ID4_init() でも ledc を割り当てていないので、サーボとしては動かない。
     TickType_t last_wake = xTaskGetTickCount();
     NATSU_ID4_init();
     LED_init_();
 
     while (1) {
         MD_Output();  // data[1]->MD1 (data[2~4]は0のままなので他MDは停止)
-        LED_Output(); // data[9]->WS2812Bテープ
+        LED_Output(); // data[9]〜[12]->WS2812Bテープ4本
         vTaskDelayUntil(&last_wake, pdMS_TO_TICKS(CTRL_PERIOD_MS));
     }
 }
@@ -155,22 +180,26 @@ void SW_Input() {
 }
 
 void LED_Output() {
-    // LED出力処理。Rx_16Data[9] の RGB565 をテープ全粒に同色で出す。
-    // 色が変わった時だけ show()(WS2812Bは割り込み禁止で送るため毎周期は無駄)。
-    static uint16_t last = 0;
+    // LED出力処理。Rx_16Data[9]〜[12] の RGB565 を、テープ1〜4にそれぞれ全粒同色で出す。
+    // 色が変わったテープだけ show() する(WS2812Bへの送信は1本あたり粒数×30us かかるので、
+    // 変化していない本まで毎周期送ると無駄に時間を食う)。
+    static uint16_t last[LED_STRIP_COUNT] = {0};
     static bool first = true;
-    uint16_t c = (uint16_t)Rx_16Data[9]; //色コード取得
-    if (!first && c == last) {
-        return;
+
+    for (int i = 0; i < LED_STRIP_COUNT; i++) {
+        uint16_t c = (uint16_t)Rx_16Data[LED_SLOT + i]; // 色コード取得
+        if (!first && c == last[i]) {
+            continue; // この本は色が変わっていないので送らない
+        }
+        last[i] = c;
+        // 5bit+6bit+5bitのRGB565を8bit+8bit+8bitに変換出力
+        uint8_t r = (c >> 8) & 0xF8; r |= (r >> 5); // 5bit→8bit
+        uint8_t g = (c >> 3) & 0xFC; g |= (g >> 6); // 6bit→8bit
+        uint8_t b = (c << 3) & 0xF8; b |= (b >> 5); // 5bit→8bit
+        g_px[i].fill(g_px[i].Color(r, g, b)); // 全粒同色
+        g_px[i].show();
     }
-    first = false;
-    last = c;
-    // 5bit+6bit+5bitのRGB565を8bit+8bit+8bitに変換出力
-    uint8_t r = (c >> 8) & 0xF8; r |= (r >> 5); // 5bit→8bit
-    uint8_t g = (c >> 3) & 0xFC; g |= (g >> 6); // 6bit→8bit
-    uint8_t b = (c << 3) & 0xF8; b |= (b >> 5); // 5bit→8bit
-    g_px.fill(g_px.Color(r, g, b)); // 全粒同色
-    g_px.show();
+    first = false; // 初回は全本を必ず1度送る(消灯状態と last[] を確実に一致させるため)
 }
 
 // ================= 関数 =================

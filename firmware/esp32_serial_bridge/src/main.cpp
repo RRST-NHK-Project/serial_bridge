@@ -249,7 +249,7 @@ void setup() {
 
 #elif defined(MODE_NATSU_ID4)
     // 夏ロボ ID4専用モード初期化
-    // 出力のみ: MD1(data[1]=マブチモータ) + WS2812Bテープ(data[9]=状態表示色)
+    // 出力のみ: MD1(data[1]=マブチモータ) + WS2812Bテープ4本(data[9]〜[12]=状態表示色)
 
     xTaskCreate(
         NATSU_ID4_Task,   // タスク関数

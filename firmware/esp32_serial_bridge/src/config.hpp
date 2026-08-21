@@ -97,7 +97,18 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 #define ENABLE_EXTRA_TR_PIN 0 // TR6,TR7を有効にする場合1に設定、サーボとのピン競合に注意
 
 // ================= 状態表示LEDテープ (WS2812B) =================
-// MODE_NATSU_ID4 で使用。Rx_16Data[9] の RGB565 色を全粒同色で出す。
+// MODE_NATSU_ID4 で使用。テープ4本を空きサーボピンで個別に駆動する。
+//   Rx_16Data[9]  -> LED_STRIP1_PIN
+//   Rx_16Data[10] -> LED_STRIP2_PIN
+//   Rx_16Data[11] -> LED_STRIP3_PIN
+//   Rx_16Data[12] -> LED_STRIP4_PIN
+// 各スロットの値は RGB565 の色コードで、そのテープ全粒を同色で光らせる。
+// ROS側(manual_charge/charge_node)は今のところ4スロットに同じ色を入れているので
+// 4本同色になるが、ファーム側は本ごとに別の色を出せる作りにしてある。
 // データ線を繋いだGPIOと、テープの粒数に合わせて変更すること。
-#define LED_STRIP_PIN SERVO1 // データ線のGPIO。SERVO1=GPIO19(空きサーボピン流用)。他の空きピンでも可
-#define LED_STRIP_NUM 30     // ★テープの実際の粒数に合わせて変更する
+#define LED_STRIP_COUNT 4    // テープの本数。減らす場合はRx_16Data[9]から順に使われる
+#define LED_STRIP1_PIN SERVO1 // SERVO1=GPIO19
+#define LED_STRIP2_PIN SERVO2 // SERVO2=GPIO21 (I2C SDA兼用ピン。I2Cを使うなら別ピンへ)
+#define LED_STRIP3_PIN SERVO3 // SERVO3=GPIO22 (I2C SCL兼用ピン。I2Cを使うなら別ピンへ)
+#define LED_STRIP4_PIN SERVO4 // SERVO4=GPIO23
+#define LED_STRIP_NUM 20     // ★テープ1本あたりの実際の粒数に合わせて変更する(4本とも同じ粒数の想定)
