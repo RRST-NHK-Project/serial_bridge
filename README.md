@@ -4,6 +4,9 @@
 > (e.g. `firmware/esp32_serial_bridge`, `firmware/stm32_serial_bridge`) to
 > clearly separate MCU-side code from ROS-side code.
 
+> NOTE: [ros2can](https://github.com/RRST-NHK-Project/ros2can) is the CAN-based successor to this package.
+> For new projects, consider using `ros2can` instead.
+
 > 日本語版: [README_ja.md](README_ja.md)
 
 ## 1. Overview

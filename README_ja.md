@@ -1,5 +1,8 @@
 # **serial_bridge**
 
+> 注記: 本パッケージの後継版として、CAN通信に対応した [ros2can](https://github.com/RRST-NHK-Project/ros2can) があります。
+> 新規プロジェクトでは `ros2can` の利用を推奨します。
+
 > English version: [README.md](README.md)
 
 ## 1. 概要
