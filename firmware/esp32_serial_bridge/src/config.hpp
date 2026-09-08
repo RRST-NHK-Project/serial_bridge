@@ -11,10 +11,10 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // ================= 基本設定 =================
 
 // IDの設定，ROS側からマイコンを識別するために使用，すべてのマイコンで異なる値にすること
-#define DEVICE_ID 0x04
+#define DEVICE_ID 0x02
 
 // モードの設定，どれか一つをコメントアウト解除する
-//#define MODE_OUTPUT
+#define MODE_OUTPUT
 //#define MODE_INPUT
 //#define MODE_IO
 //#define MODE_OMNI_IO
@@ -24,7 +24,7 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 //#define MODE_ROBOMAS_PLUS_IO
 // #define MODE_DEBUG
 // #define MODE_NATSU_ID2
-#define MODE_NATSU_ID4 // 夏ロボ ID4専用: MD1(マブチモータ) + WS2812Bテープ(状態表示)
+//#define MODE_NATSU_ID4 // 夏ロボ ID4専用: MD1(マブチモータ) + WS2812Bテープ(状態表示)
 
 // ================= 基板設定 =================
 
