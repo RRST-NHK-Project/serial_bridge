@@ -122,8 +122,8 @@ void pid_vel_control() {
 
     digitalWrite(MD1D, output[0] > 0 ? HIGH : LOW);
     digitalWrite(MD2D, output[1] > 0 ? HIGH : LOW);
-    digitalWrite(MD3D, output[2] > 0 ? HIGH : LOW);
-    digitalWrite(MD4D, output[3] > 0 ? HIGH : LOW);
+    digitalWrite(IN1, output[2] > 0 ? HIGH : LOW);
+    digitalWrite(IN2, output[3] > 0 ? HIGH : LOW);
 
     ledcWrite(0, abs(output[0]));
     ledcWrite(1, abs(output[1]));

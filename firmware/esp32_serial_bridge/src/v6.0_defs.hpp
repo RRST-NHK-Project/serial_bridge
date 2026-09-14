@@ -29,14 +29,14 @@ Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
 // MD PWM
 #define MD1P 5
 #define MD2P 12
-#define MD3P 13
+#define ENA 13
 #define MD4P 14
 
 // MD DIR
 #define MD1D 15
 #define MD2D 16
-#define MD3D 17
-#define MD4D 18
+#define IN1 17
+#define IN2 18
 
 // サーボ
 #define SERVO1 19

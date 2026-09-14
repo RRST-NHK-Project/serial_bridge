@@ -215,13 +215,19 @@ void MD_Output() {
 
     digitalWrite(MD1D, Rx16Data_local[1] > 0 ? HIGH : LOW);
     digitalWrite(MD2D, Rx16Data_local[2] > 0 ? HIGH : LOW);
-    digitalWrite(MD3D, Rx16Data_local[3] > 0 ? HIGH : LOW);
-    digitalWrite(MD4D, Rx16Data_local[4] > 0 ? HIGH : LOW);
+    if(Rx16Data_local[3] > 0){
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2, LOW);
+    }else if(Rx16Data_local[3] < 0){
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, HIGH);
+    }
+
 
     ledcWrite(0, abs(Rx16Data_local[1]));
     ledcWrite(1, abs(Rx16Data_local[2]));
     ledcWrite(2, abs(Rx16Data_local[3]));
-    ledcWrite(3, abs(Rx16Data_local[4]));
+    
 }
 
 void Servo_Output() {

@@ -19,7 +19,7 @@ void IO_init() {
     // MDの方向ピンを出力に設定
     pinMode(MD1D, OUTPUT);
     pinMode(MD2D, OUTPUT);
-    pinMode(MD3D, OUTPUT);
+    pinMode(IN1, OUTPUT);
     pinMode(MD4D, OUTPUT);
 
     // PWMの初期化

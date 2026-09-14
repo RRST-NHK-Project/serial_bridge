@@ -36,19 +36,19 @@ void Output_init() {
     // MDの方向ピンを出力に設定
     pinMode(MD1D, OUTPUT);
     pinMode(MD2D, OUTPUT);
-    pinMode(MD3D, OUTPUT);
-    pinMode(MD4D, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
+    pinMode(ENA, OUTPUT);
 
     // PWMの初期化
     ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
     ledcSetup(1, MD_PWM_FREQ, MD_PWM_RESOLUTION);
     ledcSetup(2, MD_PWM_FREQ, MD_PWM_RESOLUTION);
-    ledcSetup(3, MD_PWM_FREQ, MD_PWM_RESOLUTION);
 
     ledcAttachPin(MD1P, 0);
     ledcAttachPin(MD2P, 1);
-    ledcAttachPin(MD3P, 2);
-    ledcAttachPin(MD4P, 3);
+    ledcAttachPin(ENA,  2);
+    
 
     // サーボのPWMの初期化
     ledcSetup(4, SERVO_PWM_FREQ, SERVO_PWM_RESOLUTION);
@@ -113,8 +113,8 @@ void OMNI_IO_init(){
     // MDの方向ピンを出力に設定
     pinMode(MD1D, OUTPUT);
     pinMode(MD2D, OUTPUT);
-    pinMode(MD3D, OUTPUT);
-    pinMode(MD4D, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
 
     // PWMの初期化
     ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
@@ -124,7 +124,7 @@ void OMNI_IO_init(){
 
     ledcAttachPin(MD1P, 0);
     ledcAttachPin(MD2P, 1);
-    ledcAttachPin(MD3P, 2);
+    ledcAttachPin(ENA, 2);
     ledcAttachPin(MD4P, 3);
 
     ENCx4_init();
@@ -174,8 +174,8 @@ void  NATSU_ID2_init(){
     // MDの方向ピンを出力に設定
     pinMode(MD1D, OUTPUT);
     pinMode(MD2D, OUTPUT);
-    pinMode(MD3D, OUTPUT);
-    pinMode(MD4D, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
 
     // PWMの初期化
     ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
@@ -185,7 +185,7 @@ void  NATSU_ID2_init(){
 
     ledcAttachPin(MD1P, 0);
     ledcAttachPin(MD2P, 1);
-    ledcAttachPin(MD3P, 2);
+    ledcAttachPin(ENA, 2);
     ledcAttachPin(MD4P, 3);
 
     pinMode(TR1, OUTPUT);
@@ -317,8 +317,8 @@ void NATSU_ID4_init() {
     // MDの方向ピンを出力に設定(念のためMD1~4すべて)
     pinMode(MD1D, OUTPUT);
     pinMode(MD2D, OUTPUT);
-    pinMode(MD3D, OUTPUT);
-    pinMode(MD4D, OUTPUT);
+    pinMode(IN1, OUTPUT);
+    pinMode(IN2, OUTPUT);
 
     // PWMの初期化(MD_Output が ledc ch0~3 を使う)
     ledcSetup(0, MD_PWM_FREQ, MD_PWM_RESOLUTION);
@@ -328,7 +328,7 @@ void NATSU_ID4_init() {
 
     ledcAttachPin(MD1P, 0);
     ledcAttachPin(MD2P, 1);
-    ledcAttachPin(MD3P, 2);
+    ledcAttachPin(ENA, 2);
     ledcAttachPin(MD4P, 3);
 }
 
