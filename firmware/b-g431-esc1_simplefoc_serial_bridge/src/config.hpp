@@ -6,7 +6,8 @@ serial_bridge (ROS2) 側は DEVICE_ID と int16配列のスロット数(PC->MCU=
 
 ※ 現在は PC->MCU / MCU->PC ともに 24 slot に統一しています。
 
-Copyright (c) 2026.
+Copyright (c) 2026 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #pragma once

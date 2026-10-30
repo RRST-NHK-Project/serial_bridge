@@ -32,7 +32,8 @@ DATA（可変長）
 CHECKSUM（1バイト）
    - 計算方法: ID ^ LEN ^ DATA[0] ^ DATA[1] ^ ... ^ DATA[n]
 
-Copyright (c) 2026.
+Copyright (c) 2026 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #include "serial_task.hpp"

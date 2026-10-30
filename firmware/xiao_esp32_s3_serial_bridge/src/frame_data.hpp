@@ -1,7 +1,8 @@
 /*====================================================================
 <frame_data.hpp>
 ・シリアル通信のフレームデータ定義ヘッダーファイル
-Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
+Copyright (c) 2025 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #pragma once
@@ -16,17 +17,6 @@ extern volatile int16_t Tx_16Data[Tx16NUM];
 1~8: ENC1~8
 9~16: SW1~8
 17~23: 予備
-
-MODE_IR時は以下のフォーマットで使用
-0: protocol
-1: address
-2: command
-3: flags
-4: numberOfBits
-5: decodedRawData[15:0]
-6: decodedRawData[31:16]
-7: decodedRawData[47:32]
-8: decodedRawData[63:48]
 
 MODE_HC_SR04時は以下のフォーマットで使用
 0: valid (1=有効, 0=タイムアウト)

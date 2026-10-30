@@ -12,7 +12,8 @@ serial_bridge (PC側) との関係:
   Rx_16Data = PC -> MCU
   としています。
 
-Copyright (c) 2026.
+Copyright (c) 2026 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #pragma once

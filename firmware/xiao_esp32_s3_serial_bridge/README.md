@@ -16,7 +16,7 @@ Unlike the ESP32 actuator firmware variants, this project is primarily for senso
 | MCU | Seeed XIAO ESP32S3 |
 | Framework | Arduino (PlatformIO) |
 | Transport | USB Serial |
-| Typical use | SDM15, IR, ultrasonic, and simple encoder input bridging |
+| Typical use | SDM15, ultrasonic, and simple encoder input bridging |
 
 ---
 
@@ -28,7 +28,6 @@ Select exactly one mode in src/config.hpp.
 |:---|:---|---:|---:|---:|---:|---:|---:|:---|
 | MODE_SDM15 | SDM15 distance sensor stream bridge | 0 | 0 | 0 | 0 | 0 | 0 | SDM15: 1 stream |
 | MODE_ENC | Encoder mode slot (reserved/implementation-specific) | 0 | 0 | 0 | 0 | 1 | 0 | - |
-| MODE_IR | IR receiver protocol bridge | 0 | 0 | 0 | 0 | 0 | 0 | IR receiver: 1 |
 | MODE_HC_SR04 | Ultrasonic distance sensor bridge | 0 | 0 | 0 | 0 | 0 | 0 | HC-SR04: 1 |
 | MODE_DEBUG | Development/debug mode | - | - | - | - | - | - | project-specific |
 
@@ -47,8 +46,6 @@ Some modes define custom TX payload semantics:
   - TX[0]: distance
   - TX[1]: intensity
   - TX[2]: disturb
-- MODE_IR:
-  - TX[0..8]: protocol, address, command, flags, bit count, and split raw data
 - MODE_HC_SR04:
   - TX[0]: valid flag
   - TX[1]: distance [mm]

@@ -2,7 +2,8 @@
 <serial_task.hpp>
 ・シリアル通信タスクAPI
 
-Copyright (c) 2026.
+Copyright (c) 2026 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #pragma once

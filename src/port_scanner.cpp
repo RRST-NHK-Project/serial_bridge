@@ -2,7 +2,8 @@
 シリアルポートを走査し、Arduino/STM32/ESP32 などマイコンから送信されるフレームを受信。
 各フレームにはIDを含めているため、接続順に関わらず各マイコンを識別可能。
 フレームは START_BYTE で同期し、CHECKSUM による破損検出を行う。
-Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
+Copyright (c) 2025 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 /*====================================================================

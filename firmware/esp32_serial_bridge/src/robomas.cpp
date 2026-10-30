@@ -1,7 +1,8 @@
 /*====================================================================
 <robomas.cpp>
 ・ロボマス関連の実装ファイル
-Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
+Copyright (c) 2025 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #include "robomas.hpp"

@@ -1,7 +1,8 @@
 /*====================================================================
 <>
 ・使用しているMDとswが異なるので注意!!!
-Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
+Copyright (c) 2025 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 #include "defs.hpp"
 #include "driver/pcnt.h"

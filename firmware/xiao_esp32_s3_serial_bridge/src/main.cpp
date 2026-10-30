@@ -7,7 +7,8 @@ Description:
   PCから送られてくるバイナリデータを受信、デコードしマイコンのGPIO出力に反映させる。
   config.hppで各種設定をするだけで使用可能です。このファイル(main.cpp)を直接編集しないこと。
 
-Copyright (c) 2025 RRST-NHK-Project. All rights reserved.
+Copyright (c) 2025 RRST-NHK-Project
+SPDX-License-Identifier: MIT
 ====================================================================*/
 
 #include "config.hpp"
@@ -57,17 +58,6 @@ void setup() {
         11, // 優先度
         NULL);
 
-#elif defined(MODE_IR)
-    // 赤外線モード初期化
-    ;
-    xTaskCreate(
-        IR_Task,   // タスク関数
-        "IR_Task", // タスク名
-        2048,      // スタックサイズ（words）
-        NULL,
-        11, // 優先度
-        NULL);
-
 #elif defined(MODE_HC_SR04)
     // HC-SR04モード初期化
     xTaskCreate(
@@ -90,7 +80,7 @@ void setup() {
 #error "No mode defined. Please define one mode in config.hpp."
 #endif
 
-#if (defined(MODE_SDM15) + defined(MODE_ENC) + defined(MODE_IR) + defined(MODE_HC_SR04) + defined(MODE_DEBUG) != 1)
+#if (defined(MODE_SDM15) + defined(MODE_ENC) + defined(MODE_HC_SR04) + defined(MODE_DEBUG) != 1)
 #error "Invalid mode configuration. Please define exactly *one mode* in config.hpp."
 #endif
 }
